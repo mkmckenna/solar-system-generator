@@ -16,7 +16,7 @@ export class SolarSystem {
         this.generatePlanets()
     }
 
-    generatePlanets() {
+    private generatePlanets() {
         const planetCount = MathUtils.randInt(3, 8)
         for (let i = 0; i < planetCount; i++) {
             this.planets.push(new Planet( this ))

@@ -1,12 +1,10 @@
 import * as THREE from 'three'
-import { WIREFRAME } from '../constants'
 import { Entity } from './entity';
 
 export class Skybox extends Entity {
 
     constructor() {
         super()
-
         this.object = this.init()
     }
 
@@ -19,9 +17,9 @@ export class Skybox extends Entity {
         const starVertices = []
         
         for (let i = 0; i < 1000; i++) {
-            const x = ( Math.random() - 0.5 ) * 10000 
-            const y = ( Math.random() - 0.5 ) * 10000
-            const z = ( Math.random() - 0.5 ) * 10000
+            const x = ( Math.random() - 0.5 ) * 6000 
+            const y = ( Math.random() - 0.5 ) * 6000
+            const z = ( Math.random() - 0.5 ) * 6000
             starVertices.push(x, y, z)
         }
         
@@ -29,5 +27,10 @@ export class Skybox extends Entity {
         
         return new THREE.Points(skyboxGeometry, skyboxMaterial)
     }
+
+    private createSkyboxStars() {
+        
+    }
+
 }
 
