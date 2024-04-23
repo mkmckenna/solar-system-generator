@@ -11,11 +11,13 @@ export class Star extends Entity {
 
     public radius: number
     public coronaScale: number
+    private rotationSpeed = 0.0
 
     constructor() {
         super()
         this.radius = MathUtils.randInt( 16, 32 )
         this.coronaScale = Math.random() + 1.5;
+        this.rotationSpeed = Math.random() * 0.01
 
         this.object = this.init();
     }
@@ -49,5 +51,10 @@ export class Star extends Entity {
 
     getRadius() {
         return this.radius * this.coronaScale
-    }    
+    } 
+
+    update(): void {
+        this.object.rotation.y += this.rotationSpeed
+        console.log(this.object.rotation.y)
+    }   
 }

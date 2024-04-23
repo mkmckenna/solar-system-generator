@@ -31,7 +31,7 @@ export class SolarSystem {
         return this.star
     }
 
-    public getEntitys(): Entity[] {
+    public getEntities(): Entity[] {
         return [this.skybox, this.star, ...this.planets]
     }
 }

@@ -17,14 +17,16 @@ export enum PlanetType {
 
 export class Planet extends Entity {
 
-    private planetType: PlanetType;
-    private position: THREE.Vector3;
+    private planetType: PlanetType
+    private position: THREE.Vector3
+    private rotationSpeed = 0.0
 
     constructor( system: SolarSystem ) {
         super()
         this.position = new THREE.Vector3(0, 0, 0)
         this.setRandomPlanetPlacement( system )
         this.setRandomPlanetType()
+        this.rotationSpeed = Math.random() * 0.01
         this.planetType = PlanetType.Rock
 
         this.object = this.init();
@@ -63,6 +65,9 @@ export class Planet extends Entity {
             vertexShader: vertexShader,
             fragmentShader: planetFragmentShader,
             wireframe: WIREFRAME,
+            // uniforms: {
+            //     uTime: { value: 0.0 }
+            // }
         } )
         
         const atmosphereGeometry = new THREE.SphereGeometry( 15, 32, 16 )
@@ -84,6 +89,10 @@ export class Planet extends Entity {
         planet.position.copy(this.position)
 
         return planet
+    }
+
+    update(): void {
+        this.object.rotation.y += this.rotationSpeed
     }
 }
 

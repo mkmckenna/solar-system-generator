@@ -13,9 +13,12 @@ const solarSystem: SolarSystem = new SolarSystem()
 const animate = function () {
     requestAnimationFrame( animate );
     renderer.render( scene, camera );
+    solarSystem.getEntities().forEach( entity => {
+        entity.update()
+    } )
 }
 
-solarSystem.getEntitys().forEach( entity => {
+solarSystem.getEntities().forEach( entity => {
     scene.add( entity.object );
 } )
 
