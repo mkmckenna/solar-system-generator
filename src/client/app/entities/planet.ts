@@ -4,45 +4,11 @@ import { Box3, BufferGeometry, MathUtils, SrcColorFactor } from 'three'
 import { Entity } from './entity'
 import { SolarSystem } from './solar_system'
 
-// Vertex shader provides the position of the point
-const planetVertexShader = `
-varying vec3 vertexNormal;
+// Shaders
+import vertexShader from '../shaders/vertex_shader.glsl'
+import atmosphereFragmentShader from '../shaders/planets/atmosphere_fragment_shader.glsl'
+import planetFragmentShader from '../shaders/planets/surface_fragment_shader.glsl'
 
-void main() {
-    vertexNormal = normalize( normalMatrix * normal );
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-}
-`
-// Fragment shader provides the color of the point
-const planetFragmentShader = `
-varying vec3 vertexNormal;
-
-void main() {
-    float intensity = 1.5 - dot(vertexNormal, vec3(0.0, 0.0, 1.0));
-    vec3 atmosphere = vec3(0.3, 0.6, 1.0) * pow(intensity, 1.5);
-
-    gl_FragColor = vec4(atmosphere, 1.0);
-}
-`
-
-// Vertex shader provides the position of the point
-const atmosphereVertexShader = `
-varying vec3 vertexNormal;
-
-void main() {
-    vertexNormal = normalize( normalMatrix * normal );
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-}
-`
-// Fragment shader provides the color of the point
-const atmosphereFragmentShader = `
-varying vec3 vertexNormal;
-
-void main() {
-    float intensity = pow(0.6 - dot(vertexNormal, vec3(0.0, 0.0, 1.0)), 2.0);
-    gl_FragColor = vec4(0.3, 0.6, 1.0, 1.0) * intensity;
-}
-`
 export enum PlanetType {
     Gas = "Gas",
     Ice = "Ice",
@@ -94,14 +60,14 @@ export class Planet extends Entity {
     init(): THREE.Object3D {
         const planetGeometry = new THREE.SphereGeometry( 15, 32, 16 )
         const planetMaterial = new THREE.ShaderMaterial( {
-            vertexShader: planetVertexShader,
+            vertexShader: vertexShader,
             fragmentShader: planetFragmentShader,
             wireframe: WIREFRAME,
         } )
         
         const atmosphereGeometry = new THREE.SphereGeometry( 15, 32, 16 )
         const atmosphereMaterial = new THREE.ShaderMaterial( {
-            vertexShader: atmosphereVertexShader,
+            vertexShader: vertexShader,
             fragmentShader: atmosphereFragmentShader,
             blending: THREE.AdditiveBlending,
             side: THREE.BackSide,
