@@ -12,5 +12,5 @@ export const camera = new THREE.PerspectiveCamera(  cameraParams.fov,
                                                     cameraParams.near, 
                                                     cameraParams.far )
 
-camera.position.set(0, 400, 1)
-camera.position.z = 400;
+camera.position.set(0, 200, 1)
+camera.position.z = 100;

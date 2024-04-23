@@ -2,22 +2,41 @@ import * as THREE from 'three'
 import { WIREFRAME } from '../constants'
 import { MathUtils } from 'three'
 import { Entity } from './entity'
+import { getRandomMapValue } from '../utils/utils'
 
 import vertexShader from '../shaders/vertex_shader.glsl'
 import coronaFragmentShader from '../shaders/stars/corona_fragment_shader.glsl'
 import surfaceFragmentShader from '../shaders/stars/surface_fragment_shader.glsl'
+
+export enum StarType {
+    BlueWhite = "BlueWhite",
+    White = "White",
+    Yellow = "Yellow",
+    Orange = "Orange",
+    Red = "Red",
+}
 
 export class Star extends Entity {
 
     public radius: number
     public coronaScale: number
     private rotationSpeed = 0.0
+    private starColor: THREE.Color = new THREE.Color( 0xffffff )
+
+    private starColors: Map<StarType, THREE.Color> = new Map([
+        [StarType.BlueWhite, new THREE.Color( 0xbcd8f3 )],
+        [StarType.White, new THREE.Color( 0xf9f9f9 )],
+        [StarType.Yellow, new THREE.Color( 0xf0ca48 )],
+        [StarType.Orange, new THREE.Color( 0xfbbd59 )],
+        [StarType.Red, new THREE.Color( 0xe67f77 )],
+    ])
 
     constructor() {
         super()
         this.radius = MathUtils.randInt( 16, 32 )
         this.coronaScale = Math.random() + 1.5;
         this.rotationSpeed = Math.random() * 0.01
+        this.starColor = getRandomMapValue( this.starColors )
 
         this.object = this.init();
     }
@@ -28,6 +47,11 @@ export class Star extends Entity {
             vertexShader: vertexShader,
             fragmentShader: surfaceFragmentShader,
             wireframe: WIREFRAME,
+            uniforms: {
+                r: { value: this.starColor.r },
+                g: { value: this.starColor.g },
+                b: { value: this.starColor.b },
+            }
         } )
         
         const coronaGeometry = new THREE.SphereGeometry( this.radius, 32, 16 )
@@ -37,6 +61,11 @@ export class Star extends Entity {
             blending: THREE.AdditiveBlending,
             side: THREE.BackSide,
             wireframe: WIREFRAME,
+            uniforms: {
+                r: { value: this.starColor.r },
+                g: { value: this.starColor.g },
+                b: { value: this.starColor.b },
+            }
         } )
 
         const star = new THREE.Mesh( starGeometry, starMaterial )
@@ -49,12 +78,11 @@ export class Star extends Entity {
         return star
     }
 
-    getRadius() {
+    getRadius(): number {
         return this.radius * this.coronaScale
     } 
 
     update(): void {
         this.object.rotation.y += this.rotationSpeed
-        console.log(this.object.rotation.y)
     }   
 }
