@@ -29,20 +29,20 @@ solarSystem.getEntities().forEach( entity => {
     scene.add( entity.object );
 } )
 
-modelLoader.load( 
-    '/models/weird_planet.gltf', 
-    function ( gltf ) {
-        let planet = gltf.scene
-        planet.position.set( 0, 0, 0 )
-        planet.scale.set( 1, 1, 1 )
-        scene.add( planet );
-    }, 
-    undefined, 
-    function ( error ) {
-        console.log( 'An error happened' )
-        console.error( error );
-    } 
-);
+// modelLoader.load( 
+//     '/models/weird_planet.gltf', 
+//     function ( gltf ) {
+//         let planet = gltf.scene
+//         planet.position.set( 0, 0, 0 )
+//         planet.scale.set( 1, 1, 1 )
+//         scene.add( planet );
+//     }, 
+//     undefined, 
+//     function ( error ) {
+//         console.log( 'An error happened' )
+//         console.error( error );
+//     } 
+// );
 
 // Scene add light
 const light = new THREE.DirectionalLight( 0xffffff, 1 );

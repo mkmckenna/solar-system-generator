@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { MIN_DISTANCE_MULTIPLIER_FROM_STAR, WIREFRAME } from '../constants'
+import { MAX_ORBITAL_VELOCITY, MIN_DISTANCE_MULTIPLIER_FROM_STAR, MIN_ORBITAL_VELOCITY, WIREFRAME } from '../constants'
 import { MathUtils } from 'three'
 
 // Shaders
@@ -24,12 +24,16 @@ export class Planet extends Entity {
     private planetType: PlanetType
     private position: THREE.Vector3
     private rotationSpeed = 0.0
+    private orbitalVelocity = 0.0
+    private angle = 0.0
+    private radius = 15.0
 
     constructor( system: SolarSystem ) {
         super()
         this.position = this.getRandomPlanetPlacement( system )
         this.planetType = this.getRandomPlanetType()
         this.rotationSpeed = Math.random() * 0.01
+        this.orbitalVelocity = MathUtils.randFloat( MIN_ORBITAL_VELOCITY, MAX_ORBITAL_VELOCITY )
 
         this.object = this.init();
     }
@@ -39,11 +43,11 @@ export class Planet extends Entity {
         const texture = this.getRandomPlanetTexture( this.planetType )
 
         // Surface
-        const planetGeometry = new THREE.SphereGeometry( 15, 32, 16 )
+        const planetGeometry = new THREE.SphereGeometry( this.radius, 32, 16 )
         const planetMaterial = new THREE.MeshBasicMaterial( { map: texture } )
         
         // Atmosphere
-        const atmosphereGeometry = new THREE.SphereGeometry( 15, 32, 16 )
+        const atmosphereGeometry = new THREE.SphereGeometry( this.radius, 32, 16 )
         const atmosphereMaterial = new THREE.ShaderMaterial( {
             vertexShader: vertexShader,
             fragmentShader: atmosphereFragmentShader,
@@ -66,6 +70,18 @@ export class Planet extends Entity {
 
     update(): void {
         this.object.rotation.y += this.rotationSpeed
+        this.animateOrbit()
+    }
+
+    animateOrbit(): void {
+        // Assuming 'radius' and 'angle' are properties of 'this' that are already set
+        let radius = Math.sqrt(this.object.position.x ** 2 + this.object.position.z ** 2); // Calculate radius if not set
+
+        this.angle += this.orbitalVelocity; // Increment the angle
+
+        // Calculate new position
+        this.object.position.x = radius * Math.cos(this.angle); // Update x using cos
+        this.object.position.z = radius * Math.sin(this.angle); // Update z using sin
     }
 
     getRandomPlanetType(): PlanetType {
