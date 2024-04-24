@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { MAX_ORBITAL_VELOCITY, MIN_DISTANCE_MULTIPLIER_FROM_STAR, MIN_ORBITAL_VELOCITY, WIREFRAME } from '../constants'
+import { ATMOSPHERES_ENABLED, MAX_ORBITAL_VELOCITY, MIN_DISTANCE_MULTIPLIER_FROM_STAR, MIN_ORBITAL_VELOCITY, WIREFRAME } from '../constants'
 import { MathUtils } from 'three'
 
 // Shaders
@@ -43,26 +43,20 @@ export class Planet extends Entity {
         // Texture
         const texture = this.getRandomPlanetTexture( this.planetType )
 
-        // Surface
+        // Geometry
         const planetGeometry = new THREE.SphereGeometry( this.radius, 32, 16 )
+        
+        // Surface
         const planetMaterial = new THREE.MeshBasicMaterial( { map: texture } )
-        
-        // Atmosphere
-        const atmosphereGeometry = new THREE.SphereGeometry( this.radius, 32, 16 )
-        const atmosphereMaterial = new THREE.ShaderMaterial( {
-            vertexShader: vertexShader,
-            fragmentShader: atmosphereFragmentShader,
-            blending: THREE.AdditiveBlending,
-            side: THREE.BackSide,
-            wireframe: WIREFRAME,
-        } )
-        
         const planet = new THREE.Mesh( planetGeometry, planetMaterial )
         
-        const atmosphere = new THREE.Mesh( atmosphereGeometry, atmosphereMaterial )
-        atmosphere.scale.set( 1.2, 1.2, 1.2 )
-        
-        planet.add( atmosphere )
+        // Atmosphere
+        if( ATMOSPHERES_ENABLED ) {
+            const atmosphereMaterial = this.createAtmosphere()
+            const atmosphere = new THREE.Mesh( planetGeometry, atmosphereMaterial )
+            atmosphere.scale.set( 1.2, 1.2, 1.2 )
+            planet.add( atmosphere )
+        }
 
         planet.position.copy(this.position)
 
@@ -83,6 +77,17 @@ export class Planet extends Entity {
         // Calculate new position
         this.object.position.x = radius * Math.cos(this.angle); // Update x using cos
         this.object.position.z = radius * Math.sin(this.angle); // Update z using sin
+    }
+
+    createAtmosphere(): THREE.ShaderMaterial {
+        const atmosphereMaterial = new THREE.ShaderMaterial( {
+            vertexShader: vertexShader,
+            fragmentShader: atmosphereFragmentShader,
+            blending: THREE.AdditiveBlending,
+            side: THREE.BackSide,
+            wireframe: WIREFRAME,
+        } )
+        return atmosphereMaterial
     }
 
     getRandomPlanetType(): PlanetType {

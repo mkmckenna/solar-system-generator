@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { STAR_RADIUS_MAX, STAR_RADIUS_MIN, WIREFRAME } from '../constants'
+import { ATMOSPHERES_ENABLED, STAR_RADIUS_MAX, STAR_RADIUS_MIN, WIREFRAME } from '../constants'
 import { MathUtils } from 'three'
 import { Entity } from './entity'
 import { getRandomMapValue } from '../utils/utils'
@@ -42,7 +42,10 @@ export class Star extends Entity {
     }
 
     init(): THREE.Object3D {
+        // Geometry
         const starGeometry = new THREE.SphereGeometry( this.radius, 32, 16 )
+        
+        // Surface
         const starMaterial = new THREE.ShaderMaterial( {
             vertexShader: vertexShader,
             fragmentShader: surfaceFragmentShader,
@@ -53,8 +56,19 @@ export class Star extends Entity {
                 b: { value: this.starColor.b },
             }
         } )
+        const star = new THREE.Mesh( starGeometry, starMaterial )
         
-        const coronaGeometry = new THREE.SphereGeometry( this.radius, 32, 16 )
+        if( ATMOSPHERES_ENABLED ) {
+            const coronaMaterial = this.createCorona()
+            const corona = new THREE.Mesh( starGeometry, coronaMaterial )
+            corona.scale.set( this.coronaScale, this.coronaScale, this.coronaScale )
+            star.add( corona )
+        }
+
+        return star
+    }
+
+    createCorona(): THREE.ShaderMaterial {
         const coronaMaterial = new THREE.ShaderMaterial( {
             vertexShader: vertexShader,
             fragmentShader: coronaFragmentShader,
@@ -67,15 +81,7 @@ export class Star extends Entity {
                 b: { value: this.starColor.b },
             }
         } )
-
-        const star = new THREE.Mesh( starGeometry, starMaterial )
-        
-        const corona = new THREE.Mesh( coronaGeometry, coronaMaterial )
-        corona.scale.set( this.coronaScale, this.coronaScale, this.coronaScale )
-        
-        star.add( corona )
-
-        return star
+        return coronaMaterial
     }
 
     getRadius(): number {
