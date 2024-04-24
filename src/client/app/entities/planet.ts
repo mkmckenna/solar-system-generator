@@ -1,15 +1,15 @@
 import * as THREE from 'three'
-import { WIREFRAME } from '../constants'
-import { Box3, BufferGeometry, MathUtils, SrcColorFactor } from 'three'
+import { MIN_DISTANCE_MULTIPLIER_FROM_STAR, WIREFRAME } from '../constants'
+import { MathUtils } from 'three'
 
 // Shaders
 import vertexShader from '../shaders/vertex_shader.glsl'
 import atmosphereFragmentShader from '../shaders/planets/atmosphere_fragment_shader.glsl'
-import planetFragmentShader from '../shaders/planets/surface_fragment_shader.glsl'
-import { modelLoader, textureLoader } from '../../client'
+import { textureLoader } from '../../client'
 
+import { MAX_DISTANCE_MULTIPLIER_FROM_STAR } from '../constants'
 import { getRandomArrayElement } from '../utils/utils'
-import { Planets, planetsData } from '../data/planets_data'
+import { planetProperties } from '../data/planet_properties'
 import { Entity } from './entity'
 import { SolarSystem } from './solar_system'
 
@@ -36,8 +36,7 @@ export class Planet extends Entity {
 
     init(): THREE.Object3D {
         // Texture
-        const texturePath = 'textures/planets/' + this.getRandomPlanetTexture( this.planetType )
-        const texture = textureLoader.load( texturePath )
+        const texture = this.getRandomPlanetTexture( this.planetType )
 
         // Surface
         const planetGeometry = new THREE.SphereGeometry( 15, 32, 16 )
@@ -83,9 +82,11 @@ export class Planet extends Entity {
     getRandomPlanetPlacement( system: SolarSystem ): THREE.Vector3 {
         const starRadius = system.getStar().getRadius()
 
-        let x = ( Math.random() - 0.5 ) * MathUtils.randInt( starRadius, 500 )
+        let x = ( Math.random() - 0.5 ) * MathUtils.randInt( starRadius * MIN_DISTANCE_MULTIPLIER_FROM_STAR, 
+            starRadius * MAX_DISTANCE_MULTIPLIER_FROM_STAR)
         let y = ( Math.random() - 0.5 ) * Math.random() * 100
-        let z = ( Math.random() - 0.5 ) * MathUtils.randInt( starRadius, 500 )
+        let z = ( Math.random() - 0.5 ) * MathUtils.randInt( starRadius * MIN_DISTANCE_MULTIPLIER_FROM_STAR, 
+            starRadius * MAX_DISTANCE_MULTIPLIER_FROM_STAR)
 
         let position = new THREE.Vector3( x, y, z )
 
@@ -97,12 +98,12 @@ export class Planet extends Entity {
         return position
     }
 
-    getRandomPlanetTexture( planetType: string ): string {
-        let texture = getRandomArrayElement(planetsData[planetType].textures)
+    getRandomPlanetTexture( planetType: string ): THREE.Texture {
+        let textureName = getRandomArrayElement(planetProperties[planetType].textures)
+        const texturePath = 'textures/planets/' + textureName
+        let texture = textureLoader.load(texturePath)
         return texture
     }
-
-
     
 }
 

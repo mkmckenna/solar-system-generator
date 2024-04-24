@@ -4,15 +4,16 @@ import { Star } from './star'
 import { Entity } from './entity';
 import { MathUtils } from 'three';
 
+/**
+ * Holds all sort of entities that make up a solar system
+ */
 export class SolarSystem {
 
     private skybox = new Skybox()
     private star = new Star()
-    private planets: Planet[]
+    private planets: Planet[] = []
 
     constructor() {
-        this.planets = []
-
         this.generatePlanets()
     }
 

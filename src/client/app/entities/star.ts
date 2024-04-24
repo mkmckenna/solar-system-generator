@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { WIREFRAME } from '../constants'
+import { STAR_RADIUS_MAX, STAR_RADIUS_MIN, WIREFRAME } from '../constants'
 import { MathUtils } from 'three'
 import { Entity } from './entity'
 import { getRandomMapValue } from '../utils/utils'
@@ -33,7 +33,7 @@ export class Star extends Entity {
 
     constructor() {
         super()
-        this.radius = MathUtils.randInt( 16, 32 )
+        this.radius = MathUtils.randInt( STAR_RADIUS_MIN, STAR_RADIUS_MAX )
         this.coronaScale = Math.random() + 1.5;
         this.rotationSpeed = Math.random() * 0.01
         this.starColor = getRandomMapValue( this.starColors )
