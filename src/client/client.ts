@@ -9,6 +9,7 @@ import { scene } from './app/scene'
 import { renderer } from './app/renderer'
 
 import { SolarSystem } from './app/entities/solar_system'
+import { renderSolarSystemInfo } from './app/info'
 
 export const modelLoader = new GLTFLoader()
 export const textureLoader = new THREE.TextureLoader()
@@ -49,3 +50,5 @@ light.position.set( 20, 20, 20 );
 scene.add( light );
 
 animate();
+
+renderSolarSystemInfo( solarSystem )
