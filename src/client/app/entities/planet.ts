@@ -26,7 +26,7 @@ export class Planet extends Entity {
     private rotationSpeed = 0.0
     private orbitalVelocity = 0.0
     private angle = 0.0
-    private radius = 15.0
+    private radius = 0.0
 
     constructor( system: SolarSystem ) {
         super()
@@ -34,6 +34,7 @@ export class Planet extends Entity {
         this.planetType = this.getRandomPlanetType()
         this.rotationSpeed = Math.random() * 0.01
         this.orbitalVelocity = MathUtils.randFloat( MIN_ORBITAL_VELOCITY, MAX_ORBITAL_VELOCITY )
+        this.radius = this.getRandomPlanetSize( this.planetType )
 
         this.object = this.init();
     }
@@ -119,6 +120,11 @@ export class Planet extends Entity {
         const texturePath = 'textures/planets/' + textureName
         let texture = textureLoader.load(texturePath)
         return texture
+    }
+
+    getRandomPlanetSize( planetType: string ): number {
+        let size = MathUtils.randInt( planetProperties[planetType].size.min, planetProperties[planetType].size.max )
+        return size
     }
     
 }

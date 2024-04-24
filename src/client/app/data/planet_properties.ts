@@ -3,6 +3,10 @@ import * as planetData from './planets.json'
 export interface Planets {
     [key: string]: {
         textures: string[]
+        size: {
+            min: number
+            max: number
+        }
     }
 }
 

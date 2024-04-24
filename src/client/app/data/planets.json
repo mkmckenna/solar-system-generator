@@ -1,6 +1,10 @@
 {
     "gas": {
-        "textures":[
+        "size": {
+            "min": 50,
+            "max": 200
+        },
+        "textures": [
             "gaseous1.png",
             "gaseous2.png",
             "gaseous3.png",
@@ -8,12 +12,20 @@
         ]
     },
     "ice": {
-        "textures":[
+        "size": {
+            "min": 5,
+            "max": 30
+        },
+        "textures": [
             "icy.png"
         ]
     },
     "rock": {
-        "textures":[
+        "size": {
+            "min": 2,
+            "max": 30
+        },
+        "textures": [
             "alpine.png",
             "martian.png",
             "swamp.png",
