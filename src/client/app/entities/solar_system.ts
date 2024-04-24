@@ -3,7 +3,7 @@ import { Planet } from './planet'
 import { Star } from './star'
 import { Entity } from './entity';
 import { MathUtils } from 'three';
-import { MAX_PLANET_COUNT, MIN_PLANET_COUNT, SKYBOX_ENABLED } from '../constants';
+import { MAX_PLANET_COUNT, MIN_PLANET_COUNT, SKYBOX_ENABLED, STAR_ENABLED } from '../constants';
 
 /**
  * Holds all sort of entities that make up a solar system
@@ -23,7 +23,10 @@ export class SolarSystem {
             this.entities.push(this.skybox)
         }
         
-        this.entities.push(this.star)
+        if( STAR_ENABLED ) {
+            this.entities.push(this.star)
+        }
+        
         this.entities.push(...this.planets)
     }
 
