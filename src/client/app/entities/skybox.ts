@@ -16,10 +16,10 @@ export class Skybox extends Entity {
         
         const starVertices = []
         
-        for (let i = 0; i < 1000; i++) {
-            const x = ( Math.random() - 0.5 ) * 6000 
-            const y = ( Math.random() - 0.5 ) * 6000
-            const z = ( Math.random() - 0.5 ) * 6000
+        for (let i = 0; i < 10000; i++) {
+            const x = ( Math.random() - 0.5 ) * 5000 
+            const y = ( Math.random() - 0.5 ) * 5000
+            const z = ( Math.random() - 0.5 ) * 5000
             starVertices.push(x, y, z)
         }
         
