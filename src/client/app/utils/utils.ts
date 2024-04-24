@@ -7,3 +7,7 @@ export function getRandomMapValue( map: Map<any, any> ): any {
     const values = Array.from(map.values())
     return values[Math.floor(Math.random() * values.length)]
 }
+
+export function getRandomArrayElement( array: any[] ): any {
+    return array[Math.floor(Math.random() * array.length)]
+}

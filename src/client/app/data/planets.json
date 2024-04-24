@@ -1,0 +1,25 @@
+{
+    "gas": {
+        "textures":[
+            "gaseous1.png",
+            "gaseous2.png",
+            "gaseous3.png",
+            "gaseous4.png"
+        ]
+    },
+    "ice": {
+        "textures":[
+            "icy.png"
+        ]
+    },
+    "rock": {
+        "textures":[
+            "alpine.png",
+            "martian.png",
+            "swamp.png",
+            "savannah.png",
+            "venusian.png",
+            "volcanic.png"
+        ]
+    }
+}

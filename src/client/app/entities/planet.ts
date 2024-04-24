@@ -1,18 +1,22 @@
 import * as THREE from 'three'
 import { WIREFRAME } from '../constants'
 import { Box3, BufferGeometry, MathUtils, SrcColorFactor } from 'three'
-import { Entity } from './entity'
-import { SolarSystem } from './solar_system'
 
 // Shaders
 import vertexShader from '../shaders/vertex_shader.glsl'
 import atmosphereFragmentShader from '../shaders/planets/atmosphere_fragment_shader.glsl'
 import planetFragmentShader from '../shaders/planets/surface_fragment_shader.glsl'
+import { modelLoader, textureLoader } from '../../client'
+
+import { getRandomArrayElement } from '../utils/utils'
+import { Planets, planetsData } from '../data/planets_data'
+import { Entity } from './entity'
+import { SolarSystem } from './solar_system'
 
 export enum PlanetType {
-    Gas = "Gas",
-    Ice = "Ice",
-    Rock = "Rock"  
+    Gas = "gas",
+    Ice = "ice",
+    Rock = "rock"  
 }
 
 export class Planet extends Entity {
@@ -23,53 +27,23 @@ export class Planet extends Entity {
 
     constructor( system: SolarSystem ) {
         super()
-        this.position = new THREE.Vector3(0, 0, 0)
-        this.setRandomPlanetPlacement( system )
-        this.setRandomPlanetType()
+        this.position = this.getRandomPlanetPlacement( system )
+        this.planetType = this.getRandomPlanetType()
         this.rotationSpeed = Math.random() * 0.01
-        this.planetType = PlanetType.Rock
 
         this.object = this.init();
     }
 
-    setRandomPlanetType() {
-        const values = Object.keys(PlanetType);
-        const key = values[Math.floor(Math.random() * values.length)];
-        switch (key) {
-            case "Gas": this.planetType = PlanetType.Gas
-            case "Ice": this.planetType = PlanetType.Ice
-            case "Rock": this.planetType = PlanetType.Rock
-        }
-    }
-
-    setRandomPlanetPlacement( system: SolarSystem ) {
-        const starRadius = system.getStar().getRadius()
-
-        this.position.x = ( Math.random() - 0.5 ) * MathUtils.randInt( starRadius, 500 )
-        this.position.y = ( Math.random() - 0.5 ) * Math.random() * 100
-        this.position.z = ( Math.random() - 0.5 ) * MathUtils.randInt( starRadius, 500 )
-
-        // Check if planet is too close to star
-        if ( this.position.length() < starRadius * 2 ) {
-            this.setRandomPlanetPlacement( system )
-        }
-
-        // system.getPlanets().forEach( planet => {
-        //     planet.object.
-        // });
-    }
-
     init(): THREE.Object3D {
+        // Texture
+        const texturePath = 'textures/planets/' + this.getRandomPlanetTexture( this.planetType )
+        const texture = textureLoader.load( texturePath )
+
+        // Surface
         const planetGeometry = new THREE.SphereGeometry( 15, 32, 16 )
-        const planetMaterial = new THREE.ShaderMaterial( {
-            vertexShader: vertexShader,
-            fragmentShader: planetFragmentShader,
-            wireframe: WIREFRAME,
-            // uniforms: {
-            //     uTime: { value: 0.0 }
-            // }
-        } )
+        const planetMaterial = new THREE.MeshBasicMaterial( { map: texture } )
         
+        // Atmosphere
         const atmosphereGeometry = new THREE.SphereGeometry( 15, 32, 16 )
         const atmosphereMaterial = new THREE.ShaderMaterial( {
             vertexShader: vertexShader,
@@ -94,5 +68,41 @@ export class Planet extends Entity {
     update(): void {
         this.object.rotation.y += this.rotationSpeed
     }
+
+    getRandomPlanetType(): PlanetType {
+        const values = Object.keys(PlanetType);
+        const key = values[Math.floor(Math.random() * values.length)];
+        switch (key) {
+            case "Gas": return PlanetType.Gas
+            case "Ice": return PlanetType.Ice
+            case "Rock": return PlanetType.Rock
+            default: return PlanetType.Rock
+        }
+    }
+
+    getRandomPlanetPlacement( system: SolarSystem ): THREE.Vector3 {
+        const starRadius = system.getStar().getRadius()
+
+        let x = ( Math.random() - 0.5 ) * MathUtils.randInt( starRadius, 500 )
+        let y = ( Math.random() - 0.5 ) * Math.random() * 100
+        let z = ( Math.random() - 0.5 ) * MathUtils.randInt( starRadius, 500 )
+
+        let position = new THREE.Vector3( x, y, z )
+
+        // Check if planet is too close to star
+        if ( position.length() < starRadius * 2 ) {
+            this.getRandomPlanetPlacement( system )
+        }
+
+        return position
+    }
+
+    getRandomPlanetTexture( planetType: string ): string {
+        let texture = getRandomArrayElement(planetsData[planetType].textures)
+        return texture
+    }
+
+
+    
 }
 

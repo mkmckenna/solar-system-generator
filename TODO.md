@@ -1,0 +1,7 @@
+- Random textures on stars
+- Atmosphere based on planet type
+- Planet sizes depending on planet type
+- Star sizes depending on planet type
+- Asteroids
+- Click zoom to planets
+- Planets orbit star

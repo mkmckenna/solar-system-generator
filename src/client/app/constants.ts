@@ -1,2 +1,2 @@
 export const WIREFRAME = false
-export const GRID = true
+export const GRID = false

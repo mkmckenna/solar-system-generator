@@ -1,3 +1,9 @@
+# Solar System Generator
+
+Procedurally generate different solar systems with different star and planet types.
+
+This is a small fun project that I've used to help learn the basics about 3D rendering and modeling.
+
 ## Run
 
 ```npm install```
