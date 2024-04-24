@@ -5,10 +5,10 @@
 
 // ---- DEBUG ----
 export const WIREFRAME = false
-export const GRID = false
+export const GRID = true
 
 // ---- SOLAR SYSTEM CONSTANTS ----
-export const SKYBOX_ENABLED = true
+export const SKYBOX_ENABLED = false
 export const ATMOSPHERES_ENABLED = false
 
 

@@ -44,11 +44,9 @@ solarSystem.getEntities().forEach( entity => {
 //     } 
 // );
 
-// Scene add light
-const light = new THREE.DirectionalLight( 0xffffff, 1 );
-light.position.set( 20, 20, 20 );
+const light = new THREE.AmbientLight( 0xffffff, 1 );
+light.position.set( 0, 1, 0 );
 scene.add( light );
-
 animate();
 
 renderSolarSystemInfo( solarSystem )

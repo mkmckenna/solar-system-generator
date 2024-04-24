@@ -47,7 +47,7 @@ export class Planet extends Entity {
         const planetGeometry = new THREE.SphereGeometry( this.radius, 32, 16 )
         
         // Surface
-        const planetMaterial = new THREE.MeshBasicMaterial( { map: texture } )
+        const planetMaterial = new THREE.MeshPhongMaterial( { map: texture } )
         const planet = new THREE.Mesh( planetGeometry, planetMaterial )
         
         // Atmosphere

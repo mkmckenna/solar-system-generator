@@ -7,6 +7,7 @@ import { getRandomMapValue } from '../utils/utils'
 import vertexShader from '../shaders/vertex_shader.glsl'
 import coronaFragmentShader from '../shaders/stars/corona_fragment_shader.glsl'
 import surfaceFragmentShader from '../shaders/stars/surface_fragment_shader.glsl'
+import { scene } from '../scene'
 
 export enum StarType {
     BlueWhite = "BlueWhite",
@@ -65,6 +66,9 @@ export class Star extends Entity {
             star.add( corona )
         }
 
+        // let light = this.createLight()
+        // scene.add( light )
+
         return star
     }
 
@@ -82,6 +86,12 @@ export class Star extends Entity {
             }
         } )
         return coronaMaterial
+    }
+
+    createLight(): THREE.SpotLight {
+        const light = new THREE.SpotLight( 0xffffff, 1 )
+        light.position.set( 0, 0, 0 )
+        return light
     }
 
     getRadius(): number {
