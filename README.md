@@ -2,7 +2,7 @@
 
 Procedurally generate different solar systems with different star and planet types.
 
-This is a small fun project that I've used to help learn the basics about 3D rendering and modeling.
+This is a small fun project that I've used to help learn the basics about 3D rendering and modeling and might be of interest to others looking to do the same.
 
 ## Run
 
@@ -11,6 +11,9 @@ This is a small fun project that I've used to help learn the basics about 3D ren
 ```npm run dev```
 
 Entry point `client.ts`
+
+## Acknowledgments
+Planet textures - https://www.texturesforplanets.com
 
 ## Three.JS Notes
 
