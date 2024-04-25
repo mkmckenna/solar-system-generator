@@ -10,24 +10,24 @@ import { MAX_PLANET_COUNT, MIN_PLANET_COUNT, SKYBOX_ENABLED, STAR_ENABLED } from
  */
 export class SolarSystem {
 
-    private entities: Entity[] = []
+    private _entities: Entity[] = []
 
-    private skybox = new Skybox()
-    private star = new Star()
-    private planets: Planet[] = []
+    private _skybox = new Skybox()
+    private _star = new Star()
+    private _planets: Planet[] = []
 
     constructor() {
-        this.planets = this.generatePlanets()
+        this._planets = this.generatePlanets()
 
         if( SKYBOX_ENABLED ) {
-            this.entities.push(this.skybox)
+            this._entities.push(this._skybox)
         }
         
         if( STAR_ENABLED ) {
-            this.entities.push(this.star)
+            this._entities.push(this._star)
         }
         
-        this.entities.push(...this.planets)
+        this._entities.push(...this._planets)
     }
 
     private generatePlanets(): Planet[] {
@@ -40,15 +40,15 @@ export class SolarSystem {
         return planets
     }
 
-    public getPlanets(): Planet[] {
-        return this.planets
+    public get planets() {
+        return this._planets
+    }
+    
+    public get star() {
+        return this._star
     }
 
-    public getStar(): Star {
-        return this.star
-    }
-
-    public getEntities(): Entity[] {
-        return this.entities
+    public get entities() {
+        return this._entities
     }
 }

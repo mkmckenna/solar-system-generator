@@ -20,14 +20,14 @@ export const textureLoader = new THREE.TextureLoader()
 const render = function () {
     requestAnimationFrame( render );
     renderer.render( scene, camera );
-    solarSystem.getEntities().forEach( entity => {
+    solarSystem.entities.forEach( entity => {
         entity.update()
     } )
 }
 
 // BUILD SOLAR SYSTEM
 const solarSystem: SolarSystem = new SolarSystem()
-solarSystem.getEntities().forEach( entity => {
+solarSystem.entities.forEach( entity => {
     scene.add( entity.object );
 } )
 

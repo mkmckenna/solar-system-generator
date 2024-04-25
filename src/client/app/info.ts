@@ -5,11 +5,11 @@ export function renderSolarSystemInfo(solarSystem: SolarSystem): void {
     
     let starRadius = document.getElementById('star-radius')
     if( starRadius !== null ) {
-        starRadius.innerText = solarSystem.getStar().getRadius().toString()
+        starRadius.innerText = solarSystem.star.getRadius().toString()
     }
 
     let planetCount = document.getElementById('planet-count')
     if( planetCount !== null ) {
-        planetCount.innerText = solarSystem.getPlanets().length.toString()
+        planetCount.innerText = solarSystem.planets.length.toString()
     }
 }

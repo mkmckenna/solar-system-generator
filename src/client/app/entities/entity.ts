@@ -1,4 +1,11 @@
 import * as THREE from 'three';
+
+export enum EntityType {
+    Star = "Star",
+    Planet = "Planet",
+    Moon = "Moon",
+}
+
 export abstract class Entity {
     public object!: THREE.Object3D;
     abstract init(): THREE.Object3D;

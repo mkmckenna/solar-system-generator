@@ -1,13 +1,12 @@
 import * as THREE from 'three'
 import { ATMOSPHERES_ENABLED, STAR_RADIUS_MAX, STAR_RADIUS_MIN, WIREFRAME } from '../constants'
 import { MathUtils } from 'three'
-import { Entity } from './entity'
+import { Entity, EntityType } from './entity'
 import { getRandomMapValue } from '../utils/utils'
 
 import vertexShader from '../shaders/vertex_shader.glsl'
 import coronaFragmentShader from '../shaders/stars/corona_fragment_shader.glsl'
 import surfaceFragmentShader from '../shaders/stars/surface_fragment_shader.glsl'
-import { scene } from '../scene'
 
 export enum StarType {
     BlueWhite = "BlueWhite",
@@ -19,10 +18,10 @@ export enum StarType {
 
 export class Star extends Entity {
 
-    public radius: number
-    public coronaScale: number
-    private rotationSpeed = 0.0
-    private starColor: THREE.Color = new THREE.Color( 0xffffff )
+    private _radius: number
+    private _coronaScale: number
+    private _rotationSpeed = 0.0
+    private _starColor: THREE.Color = new THREE.Color( 0xffffff )
 
     private starColors: Map<StarType, THREE.Color> = new Map([
         [StarType.BlueWhite, new THREE.Color( 0xbcd8f3 )],
@@ -34,40 +33,39 @@ export class Star extends Entity {
 
     constructor() {
         super()
-        this.radius = MathUtils.randInt( STAR_RADIUS_MIN, STAR_RADIUS_MAX )
-        this.coronaScale = Math.random() + 1.5;
-        this.rotationSpeed = Math.random() * 0.01
-        this.starColor = getRandomMapValue( this.starColors )
+        this._radius = MathUtils.randInt( STAR_RADIUS_MIN, STAR_RADIUS_MAX )
+        this._coronaScale = Math.random() + 1.5;
+        this._rotationSpeed = Math.random() * 0.01
+        this._starColor = getRandomMapValue( this.starColors )
 
         this.object = this.init();
     }
 
     init(): THREE.Object3D {
+        const star = new THREE.Mesh()
+        star.name = EntityType.Star
+
         // Geometry
-        const starGeometry = new THREE.SphereGeometry( this.radius, 32, 16 )
+        star.geometry = new THREE.SphereGeometry( this._radius, 32, 16 )
         
         // Surface
-        const starMaterial = new THREE.ShaderMaterial( {
+        star.material = new THREE.ShaderMaterial( {
             vertexShader: vertexShader,
             fragmentShader: surfaceFragmentShader,
             wireframe: WIREFRAME,
             uniforms: {
-                r: { value: this.starColor.r },
-                g: { value: this.starColor.g },
-                b: { value: this.starColor.b },
+                r: { value: this._starColor.r },
+                g: { value: this._starColor.g },
+                b: { value: this._starColor.b },
             }
         } )
-        const star = new THREE.Mesh( starGeometry, starMaterial )
         
         if( ATMOSPHERES_ENABLED ) {
             const coronaMaterial = this.createCorona()
-            const corona = new THREE.Mesh( starGeometry, coronaMaterial )
-            corona.scale.set( this.coronaScale, this.coronaScale, this.coronaScale )
+            const corona = new THREE.Mesh( star.geometry, coronaMaterial )
+            corona.scale.set( this._coronaScale, this._coronaScale, this._coronaScale )
             star.add( corona )
         }
-
-        // let light = this.createLight()
-        // scene.add( light )
 
         return star
     }
@@ -80,9 +78,9 @@ export class Star extends Entity {
             side: THREE.BackSide,
             wireframe: WIREFRAME,
             uniforms: {
-                r: { value: this.starColor.r },
-                g: { value: this.starColor.g },
-                b: { value: this.starColor.b },
+                r: { value: this._starColor.r },
+                g: { value: this._starColor.g },
+                b: { value: this._starColor.b },
             }
         } )
         return coronaMaterial
@@ -95,10 +93,18 @@ export class Star extends Entity {
     }
 
     getRadius(): number {
-        return this.radius * this.coronaScale
+        return this._radius * this._coronaScale
     } 
 
     update(): void {
-        this.object.rotation.y += this.rotationSpeed
-    }   
+        this.object.rotation.y += this._rotationSpeed
+    }
+    
+    public get radius(): number {
+        return this._radius
+    }
+
+    public get coronaScale(): number {
+        return this._coronaScale
+    }
 }

@@ -10,7 +10,7 @@ import { textureLoader } from '../../client'
 import { MAX_DISTANCE_MULTIPLIER_FROM_STAR } from '../constants'
 import { getRandomArrayElement } from '../utils/utils'
 import { planetProperties } from '../data/planet_properties'
-import { Entity } from './entity'
+import { EntityType, Entity } from './entity'
 import { SolarSystem } from './solar_system'
 
 export enum PlanetType {
@@ -21,50 +21,50 @@ export enum PlanetType {
 
 export class Planet extends Entity {
 
-    private planetType: PlanetType
-    private position: THREE.Vector3
-    private rotationSpeed = 0.0
-    private orbitalVelocity = 0.0
-    private angle = 0.0
-    private radius = 0.0
+    private _planetType: PlanetType
+    private _position: THREE.Vector3
+    private _rotationSpeed = 0.0
+    private _orbitalVelocity = 0.0
+    private _angle = 0.0
+    private _radius = 0.0
 
     constructor( system: SolarSystem ) {
         super()
-        this.position = this.getRandomPlanetPlacement( system )
-        this.planetType = this.getRandomPlanetType()
-        this.rotationSpeed = Math.random() * 0.01
-        this.orbitalVelocity = MathUtils.randFloat( MIN_ORBITAL_VELOCITY, MAX_ORBITAL_VELOCITY )
-        this.radius = this.getRandomPlanetSize( this.planetType )
+        this._position = this.getRandomPlanetPlacement( system )
+        this._planetType = this.getRandomPlanetType()
+        this._rotationSpeed = Math.random() * 0.01
+        this._orbitalVelocity = MathUtils.randFloat( MIN_ORBITAL_VELOCITY, MAX_ORBITAL_VELOCITY )
+        this._radius = this.getRandomPlanetSize( this._planetType )
 
         this.object = this.init();
     }
 
     init(): THREE.Object3D {
+        const planet = new THREE.Mesh()
+        planet.name = EntityType.Planet
+        
         // Texture
-        const texture = this.getRandomPlanetTexture( this.planetType )
-
+        const texture = this.getRandomPlanetTexture( this._planetType )
         // Geometry
-        const planetGeometry = new THREE.SphereGeometry( this.radius, 32, 16 )
-        
+        planet.geometry = new THREE.SphereGeometry( this._radius, 32, 16 )
         // Surface
-        const planetMaterial = new THREE.MeshPhongMaterial( { map: texture } )
-        const planet = new THREE.Mesh( planetGeometry, planetMaterial )
-        
+        planet.material = new THREE.MeshPhongMaterial( { map: texture } )
+
         // Atmosphere
         if( ATMOSPHERES_ENABLED ) {
             const atmosphereMaterial = this.createAtmosphere()
-            const atmosphere = new THREE.Mesh( planetGeometry, atmosphereMaterial )
+            const atmosphere = new THREE.Mesh( planet.geometry, atmosphereMaterial )
             atmosphere.scale.set( 1.2, 1.2, 1.2 )
             planet.add( atmosphere )
         }
 
-        planet.position.copy(this.position)
+        planet.position.copy(this._position)
 
         return planet
     }
 
     update(): void {
-        this.object.rotation.y += this.rotationSpeed
+        this.object.rotation.y += this._rotationSpeed
         this.animateOrbit()
     }
 
@@ -72,11 +72,11 @@ export class Planet extends Entity {
         // Assuming 'radius' and 'angle' are properties of 'this' that are already set
         let radius = Math.sqrt(this.object.position.x ** 2 + this.object.position.z ** 2); // Calculate radius if not set
 
-        this.angle += this.orbitalVelocity; // Increment the angle
+        this._angle += this._orbitalVelocity; // Increment the angle
 
         // Calculate new position
-        this.object.position.x = radius * Math.cos(this.angle); // Update x using cos
-        this.object.position.z = radius * Math.sin(this.angle); // Update z using sin
+        this.object.position.x = radius * Math.cos(this._angle); // Update x using cos
+        this.object.position.z = radius * Math.sin(this._angle); // Update z using sin
     }
 
     createAtmosphere(): THREE.ShaderMaterial {
@@ -102,7 +102,7 @@ export class Planet extends Entity {
     }
 
     getRandomPlanetPlacement( system: SolarSystem ): THREE.Vector3 {
-        const starRadius = system.getStar().getRadius()
+        const starRadius = system.star.getRadius()
 
         let x = ( Math.random() - 0.5 ) * MathUtils.randInt( starRadius * MIN_DISTANCE_MULTIPLIER_FROM_STAR, 
             starRadius * MAX_DISTANCE_MULTIPLIER_FROM_STAR)
