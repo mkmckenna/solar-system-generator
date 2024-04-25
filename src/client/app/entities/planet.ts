@@ -1,5 +1,11 @@
 import * as THREE from 'three'
-import { ATMOSPHERES_ENABLED, MAX_ORBITAL_VELOCITY, MIN_DISTANCE_MULTIPLIER_FROM_STAR, MIN_ORBITAL_VELOCITY, PLANET_ORBIT_ENABLED, WIREFRAME } from '../constants'
+import { 
+    ATMOSPHERES_ENABLED, 
+    MAX_ORBITAL_VELOCITY, 
+    MIN_DISTANCE_MULTIPLIER_FROM_STAR, 
+    MIN_ORBITAL_VELOCITY, 
+    PLANET_ORBIT_ENABLED, WIREFRAME 
+} from '../constants'
 import { MathUtils } from 'three'
 
 // Shaders
@@ -16,13 +22,12 @@ import { SolarSystem } from './solar_system'
 export enum PlanetType {
     Gas = "gas",
     Ice = "ice",
-    Rock = "rock"  
+    Rock = "rock"
 }
 
 export class Planet extends Entity {
 
     public planetType: PlanetType = PlanetType.Rock
-    private _position: THREE.Vector3 = new THREE.Vector3()
     public rotationSpeed = 0.0
     public orbitalVelocity = 0.0
     public angle = 0.0
@@ -50,9 +55,6 @@ export class Planet extends Entity {
             atmosphere.scale.set( 1.2, 1.2, 1.2 )
             planet.add( atmosphere )
         }
-
-        // Position        
-        planet.position.copy(this.position)
 
         // Angle (might not be calculated correctly, see animateOrbit()
         this.angle = Math.random() * Math.PI * 2
@@ -98,20 +100,20 @@ export class Planet extends Entity {
     }
 
     /**
-     * This might be a bad way to handle position as it's not directly tied to 
-     * the object's position and duplicates position data.
-     * 
-     * Might be best to switch to using object.position directly.
+     * This might be a bad way to handle position
      */
     public set position( position: THREE.Vector3 ) {
-        this._position = position
-        if( this.object ) {
-            this.object.position.copy(position)
+        if( !this.object ) {
+            throw new Error("Object3D not initialized for Planet")
         }
+        this.object.position.copy(position)
     }
     
     public get position(): THREE.Vector3 {
-        return this._position
+        if( !this.object ) {
+            throw new Error("Object3D not initialized for Planet")
+        }
+        return this.object.position
     }
     
 }
@@ -126,12 +128,12 @@ export class PlanetBuilder {
         const planet = new Planet()
 
         planet.planetType = planetType
-        planet.position = position
         planet.rotationSpeed = rotationSpeed
         planet.orbitalVelocity = orbitalVelocity
         planet.radius = radius
 
         planet.object = planet.init()
+        planet.position = position
 
         return planet
     }
@@ -139,13 +141,13 @@ export class PlanetBuilder {
     buildRandomPlanet( solarSystem: SolarSystem ): Planet {
         const planet = new Planet()
 
-        planet.position = this.getRandomPlanetPlacement( solarSystem )
         planet.planetType = this.getRandomPlanetType()
         planet.rotationSpeed = Math.random() * 0.01
         planet.orbitalVelocity = MathUtils.randFloat( MIN_ORBITAL_VELOCITY, MAX_ORBITAL_VELOCITY )
         planet.radius = this.getRandomPlanetSize( planet.planetType )
-
+        
         planet.object = planet.init()
+        planet.position = this.getRandomPlanetPlacement( solarSystem )
 
         return planet
     }
