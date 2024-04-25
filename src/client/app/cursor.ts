@@ -18,15 +18,13 @@ function onPointerMove( event: MouseEvent ) {
     const intersects = raycaster.intersectObjects( scene.children, true );
     
     if ( intersects.length > 0 ) {
-        console.log(intersects[ 0 ].object)
         if(intersects[ 0 ].object.name === EntityType.Planet) {
-            console.log('Planet')   
+            console.log(intersects[ 0 ].object)
         }
     }
 }
 
 export function init() {
-    console.log( 'Init cursor' );
     window.addEventListener( 'pointermove', onPointerMove );
 }
 

@@ -4,7 +4,7 @@
  */
 
 // ---- DEBUG ----
-export const WIREFRAME = false
+export const WIREFRAME = true
 export const GRID = true
 
 // ---- SOLAR SYSTEM CONSTANTS ----

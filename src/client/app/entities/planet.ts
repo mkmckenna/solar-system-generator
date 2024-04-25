@@ -21,22 +21,17 @@ export enum PlanetType {
 
 export class Planet extends Entity {
 
-    private _planetType: PlanetType
-    private _position: THREE.Vector3
-    private _rotationSpeed = 0.0
-    private _orbitalVelocity = 0.0
-    private _angle = 0.0
-    private _radius = 0.0
+    public planetType: PlanetType = PlanetType.Rock
+    public position: THREE.Vector3 = new THREE.Vector3()
+    public rotationSpeed = 0.0
+    public orbitalVelocity = 0.0
+    public angle = 0.0
+    public radius = 0.0
 
-    constructor( system: SolarSystem ) {
+    constructor() {
         super()
-        this._position = this.getRandomPlanetPlacement( system )
-        this._planetType = this.getRandomPlanetType()
-        this._rotationSpeed = Math.random() * 0.01
-        this._orbitalVelocity = MathUtils.randFloat( MIN_ORBITAL_VELOCITY, MAX_ORBITAL_VELOCITY )
-        this._radius = this.getRandomPlanetSize( this._planetType )
 
-        this.object = this.init();
+        this.object = this.init()
     }
 
     init(): THREE.Object3D {
@@ -44,9 +39,9 @@ export class Planet extends Entity {
         planet.name = EntityType.Planet
         
         // Texture
-        const texture = this.getRandomPlanetTexture( this._planetType )
+        const texture = this.getTextureForPlanetType( this.planetType )
         // Geometry
-        planet.geometry = new THREE.SphereGeometry( this._radius, 32, 16 )
+        planet.geometry = new THREE.SphereGeometry( this.radius, 32, 16 )
         // Surface
         planet.material = new THREE.MeshPhongMaterial( { map: texture } )
 
@@ -58,13 +53,12 @@ export class Planet extends Entity {
             planet.add( atmosphere )
         }
 
-        planet.position.copy(this._position)
-
+        planet.position.copy(this.position)
         return planet
     }
 
     update(): void {
-        this.object.rotation.y += this._rotationSpeed
+        this.object.rotation.y += this.rotationSpeed
         this.animateOrbit()
     }
 
@@ -72,11 +66,11 @@ export class Planet extends Entity {
         // Assuming 'radius' and 'angle' are properties of 'this' that are already set
         let radius = Math.sqrt(this.object.position.x ** 2 + this.object.position.z ** 2); // Calculate radius if not set
 
-        this._angle += this._orbitalVelocity; // Increment the angle
+        this.angle += this.orbitalVelocity; // Increment the angle
 
         // Calculate new position
-        this.object.position.x = radius * Math.cos(this._angle); // Update x using cos
-        this.object.position.z = radius * Math.sin(this._angle); // Update z using sin
+        this.object.position.x = radius * Math.cos(this.angle); // Update x using cos
+        this.object.position.z = radius * Math.sin(this.angle); // Update z using sin
     }
 
     createAtmosphere(): THREE.ShaderMaterial {
@@ -90,7 +84,50 @@ export class Planet extends Entity {
         return atmosphereMaterial
     }
 
-    getRandomPlanetType(): PlanetType {
+    getTextureForPlanetType( planetType: string ): THREE.Texture {
+        let textureName = getRandomArrayElement(planetProperties[planetType].textures)
+        const texturePath = 'textures/planets/' + textureName
+        let texture = textureLoader.load(texturePath)
+        return texture
+    }
+    
+}
+
+export class PlanetBuilder {
+    buildPlanet(    planetType: PlanetType, 
+                    position: THREE.Vector3, 
+                    rotationSpeed: number, 
+                    orbitalVelocity: number, 
+                    radius: number ): Planet {
+
+        const planet = new Planet()
+
+        planet.planetType = planetType
+        planet.position = position
+        planet.rotationSpeed = rotationSpeed
+        planet.orbitalVelocity = orbitalVelocity
+        planet.radius = radius
+
+        planet.object = planet.init()
+
+        return planet
+    }
+
+    buildRandomPlanet( solarSystem: SolarSystem ): Planet {
+        const planet = new Planet()
+
+        planet.position = this.getRandomPlanetPlacement( solarSystem )
+        planet.planetType = this.getRandomPlanetType()
+        planet.rotationSpeed = Math.random() * 0.01
+        planet.orbitalVelocity = MathUtils.randFloat( MIN_ORBITAL_VELOCITY, MAX_ORBITAL_VELOCITY )
+        planet.radius = this.getRandomPlanetSize( planet.planetType )
+
+        planet.object = planet.init()
+
+        return planet
+    }
+
+    private getRandomPlanetType(): PlanetType {
         const values = Object.keys(PlanetType);
         const key = values[Math.floor(Math.random() * values.length)];
         switch (key) {
@@ -101,8 +138,8 @@ export class Planet extends Entity {
         }
     }
 
-    getRandomPlanetPlacement( system: SolarSystem ): THREE.Vector3 {
-        const starRadius = system.star.getRadius()
+    private getRandomPlanetPlacement( solarSystem: SolarSystem ): THREE.Vector3 {
+        const starRadius = solarSystem.star.getRadius()
 
         let x = ( Math.random() - 0.5 ) * MathUtils.randInt( starRadius * MIN_DISTANCE_MULTIPLIER_FROM_STAR, 
             starRadius * MAX_DISTANCE_MULTIPLIER_FROM_STAR)
@@ -114,23 +151,15 @@ export class Planet extends Entity {
 
         // Check if planet is too close to star
         if ( position.length() < starRadius * 2 ) {
-            this.getRandomPlanetPlacement( system )
+            this.getRandomPlanetPlacement( solarSystem )
         }
 
         return position
     }
 
-    getRandomPlanetTexture( planetType: string ): THREE.Texture {
-        let textureName = getRandomArrayElement(planetProperties[planetType].textures)
-        const texturePath = 'textures/planets/' + textureName
-        let texture = textureLoader.load(texturePath)
-        return texture
-    }
-
-    getRandomPlanetSize( planetType: string ): number {
+    private getRandomPlanetSize( planetType: string ): number {
         let size = MathUtils.randInt( planetProperties[planetType].size.min, planetProperties[planetType].size.max )
         return size
     }
-    
 }
 

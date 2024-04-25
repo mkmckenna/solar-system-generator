@@ -8,7 +8,7 @@ import { camera } from './app/camera'
 import { scene } from './app/scene'
 import { renderer } from './app/renderer'
 
-import { SolarSystem } from './app/entities/solar_system'
+import { SolarSystem, SolarSystemBuilder } from './app/entities/solar_system'
 import { renderSolarSystemInfo } from './app/info'
 import * as cursor from '../client/app/cursor'
 
@@ -26,7 +26,8 @@ const render = function () {
 }
 
 // BUILD SOLAR SYSTEM
-const solarSystem: SolarSystem = new SolarSystem()
+const solarSystemBuilder = new SolarSystemBuilder()
+const solarSystem: SolarSystem = solarSystemBuilder.buildRandomSolarSystem()
 solarSystem.entities.forEach( entity => {
     scene.add( entity.object );
 } )
