@@ -22,12 +22,12 @@ export enum PlanetType {
 export class Planet extends Entity {
 
     public planetType: PlanetType = PlanetType.Rock
-    public position: THREE.Vector3 = new THREE.Vector3()
+    private _position: THREE.Vector3 = new THREE.Vector3()
     public rotationSpeed = 0.0
     public orbitalVelocity = 0.0
     public angle = 0.0
     public radius = 0.0
-
+    
     constructor() {
         super()
         this.type = EntityType.Planet
@@ -69,14 +69,14 @@ export class Planet extends Entity {
 
     animateOrbit(): void {
         // Assuming 'radius' and 'angle' are properties of 'this' that are already set
-        let radius = Math.sqrt(this.object.position.x ** 2 + this.object.position.z ** 2); // Calculate radius if not set
+        let radius = Math.sqrt(this.position.x ** 2 + this.position.z ** 2); // Calculate radius if not set
 
         // Increment the angle
         this.angle += this.orbitalVelocity; 
 
         // Calculate new position
-        this.object.position.x = radius * Math.cos(this.angle); // Update x using cos
-        this.object.position.z = radius * Math.sin(this.angle); // Update z using sin
+        this.position.x = radius * Math.cos(this.angle); // Update x using cos
+        this.position.z = radius * Math.sin(this.angle); // Update z using sin
     }
 
     createAtmosphere(): THREE.ShaderMaterial {
@@ -97,7 +97,22 @@ export class Planet extends Entity {
         return texture
     }
 
+    /**
+     * This might be a bad way to handle position as it's not directly tied to 
+     * the object's position and duplicates position data.
+     * 
+     * Might be best to switch to using object.position directly.
+     */
+    public set position( position: THREE.Vector3 ) {
+        this._position = position
+        if( this.object ) {
+            this.object.position.copy(position)
+        }
+    }
     
+    public get position(): THREE.Vector3 {
+        return this._position
+    }
     
 }
 
