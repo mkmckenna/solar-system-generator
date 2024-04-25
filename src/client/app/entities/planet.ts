@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { ATMOSPHERES_ENABLED, MAX_ORBITAL_VELOCITY, MIN_DISTANCE_MULTIPLIER_FROM_STAR, MIN_ORBITAL_VELOCITY, WIREFRAME } from '../constants'
+import { ATMOSPHERES_ENABLED, MAX_ORBITAL_VELOCITY, MIN_DISTANCE_MULTIPLIER_FROM_STAR, MIN_ORBITAL_VELOCITY, PLANET_ORBIT_ENABLED, WIREFRAME } from '../constants'
 import { MathUtils } from 'three'
 
 // Shaders
@@ -62,14 +62,17 @@ export class Planet extends Entity {
 
     update(): void {
         this.object.rotation.y += this.rotationSpeed
-        this.animateOrbit()
+        if( PLANET_ORBIT_ENABLED ) {
+            this.animateOrbit()
+        }
     }
 
     animateOrbit(): void {
         // Assuming 'radius' and 'angle' are properties of 'this' that are already set
         let radius = Math.sqrt(this.object.position.x ** 2 + this.object.position.z ** 2); // Calculate radius if not set
 
-        this.angle += this.orbitalVelocity; // Increment the angle
+        // Increment the angle
+        this.angle += this.orbitalVelocity; 
 
         // Calculate new position
         this.object.position.x = radius * Math.cos(this.angle); // Update x using cos

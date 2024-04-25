@@ -13,6 +13,7 @@ export const ATMOSPHERES_ENABLED = false
 
 
 // ---- PLANET CONSTANTS ----
+export const PLANET_ORBIT_ENABLED = false
 // Distance from star
 export const MIN_PLANET_COUNT = 3
 export const MAX_PLANET_COUNT = 10
