@@ -18,8 +18,8 @@ function onPointerMove( event: MouseEvent ) {
     const intersects = raycaster.intersectObjects( scene.children, true );
     
     if ( intersects.length > 0 ) {
-        if(intersects[ 0 ].object.name === EntityType.Planet) {
-            console.log(intersects[ 0 ].object)
+        if(intersects[ 0 ].object.userData !== null) {
+            console.log(intersects[ 0 ].object.userData)
         }
     }
 }

@@ -33,6 +33,9 @@ export class Star extends Entity {
 
     constructor() {
         super()
+        this.type = EntityType.Star
+
+        // TODO: Move to a builder class
         this._radius = MathUtils.randInt( STAR_RADIUS_MIN, STAR_RADIUS_MAX )
         this._coronaScale = Math.random() + 1.5;
         this._rotationSpeed = Math.random() * 0.01
@@ -43,7 +46,6 @@ export class Star extends Entity {
 
     init(): THREE.Object3D {
         const star = new THREE.Mesh()
-        star.name = EntityType.Star
 
         // Geometry
         star.geometry = new THREE.SphereGeometry( this._radius, 32, 16 )

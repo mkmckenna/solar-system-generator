@@ -30,11 +30,11 @@ export class Planet extends Entity {
 
     constructor() {
         super()
+        this.type = EntityType.Planet
     }
 
     init(): THREE.Object3D {
         const planet = new THREE.Mesh()
-        planet.name = EntityType.Planet
         
         // Texture
         const texture = this.getTextureForPlanetType( this.planetType )
@@ -96,6 +96,8 @@ export class Planet extends Entity {
         let texture = textureLoader.load(texturePath)
         return texture
     }
+
+    
     
 }
 
