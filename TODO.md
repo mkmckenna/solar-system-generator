@@ -1,11 +1,8 @@
 ### Refactor
-- Solar system builder should be removed from entities
-- Remove getters and setters 
 - Install code style enforcer
 
 ### Bugs
-- Planets can spawn inside or too close to the star
-
+- Planets can spawn inside, too close to the star, or in other planets orbital path
 
 ### Features
 - Light from star

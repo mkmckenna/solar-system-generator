@@ -30,8 +30,6 @@ export class Planet extends Entity {
 
     constructor() {
         super()
-
-        this.object = this.init()
     }
 
     init(): THREE.Object3D {
@@ -53,7 +51,12 @@ export class Planet extends Entity {
             planet.add( atmosphere )
         }
 
+        // Position        
         planet.position.copy(this.position)
+
+        // Angle (might not be calculated correctly, see animateOrbit()
+        this.angle = Math.random() * Math.PI * 2
+
         return planet
     }
 
