@@ -10,7 +10,7 @@ This is a small fun project that I've used to help learn the basics about 3D ren
 
 ```npm run dev```
 
-Entry point `client.ts`
+Entry point `app.ts`
 
 ## Acknowledgments
 Planet textures - https://www.texturesforplanets.com: A great tool for generating planet textures.

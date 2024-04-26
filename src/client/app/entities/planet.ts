@@ -5,7 +5,7 @@ import {
 } from '../constants'
 
 // Shaders
-import { textureLoader } from '../../client'
+import { textureLoader } from '../../app'
 import atmosphereFragmentShader from '../shaders/planets/atmosphere_fragment_shader.glsl'
 import vertexShader from '../shaders/vertex_shader.glsl'
 

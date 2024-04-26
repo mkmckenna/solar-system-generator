@@ -1,8 +1,8 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import * as cursor from '../client/app/cursor'
 import { GRID } from './app/constants'
+import * as cursor from './app/cursor'
 import { SolarSystemBuilder } from './app/entities/builders/solar_system_builder'
 import { SolarSystem } from './app/entities/solar_system'
 
@@ -80,7 +80,7 @@ export class App {
             window.innerWidth / window.innerHeight,
             0.1,
             10000)
-        camera.position.set(0, 3000, 0)
+        camera.position.set(1000, 1000, 1000)
         return camera
     }
 
