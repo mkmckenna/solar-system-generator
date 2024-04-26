@@ -3,8 +3,8 @@ import { MAX_PLANET_COUNT, MIN_PLANET_COUNT, SKYBOX_ENABLED, STAR_ENABLED } from
 import { Planet } from '../planet';
 import { Skybox } from '../skybox';
 import { SolarSystem } from '../solar_system';
-import { Star } from '../star';
 import { PlanetBuilder } from './planet_builder';
+import { StarBuilder } from './star_builder';
 
 export class SolarSystemBuilder {
     buildRandomSolarSystem(): SolarSystem {
@@ -12,7 +12,8 @@ export class SolarSystemBuilder {
 
         // Star
         if (STAR_ENABLED) {
-            solarSystem.star = new Star()
+            let starBuilder = new StarBuilder()
+            solarSystem.star = starBuilder.buildRandomStar()
         }
 
         // Skybox

@@ -1,7 +1,7 @@
 {
     "stars": {
         "red_giant": {
-            "type": "RedGiant",
+            "type": "red_giant",
             "size": {
                 "min": 100,
                 "max": 200
@@ -12,7 +12,7 @@
             "probability": 0.20
         },
         "yellow": {
-            "type": "Yellow",
+            "type": "yellow",
             "size": {
                 "min": 50,
                 "max": 100
@@ -23,7 +23,7 @@
             "probability": 0.60
         },
         "dwarf": {
-            "type": "Dwarf",
+            "type": "dwarf",
             "size": {
                 "min": 20,
                 "max": 30
@@ -36,7 +36,7 @@
     },
     "planets": {
         "gas": {
-            "type": "Gas",
+            "type": "gas",
             "size": {
                 "min": 50,
                 "max": 200
@@ -50,7 +50,7 @@
             "probability": 0.20
         },
         "ice": {
-            "type": "Ice",
+            "type": "ice",
             "size": {
                 "min": 5,
                 "max": 30
@@ -61,7 +61,7 @@
             "probability": 0.20
         },
         "rock": {
-            "type": "Rock",
+            "type": "rock",
             "size": {
                 "min": 2,
                 "max": 30

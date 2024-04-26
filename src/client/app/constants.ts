@@ -9,7 +9,7 @@ export const GRID = true
 
 // ---- SOLAR SYSTEM CONSTANTS ----
 export const SKYBOX_ENABLED = false
-export const ATMOSPHERES_ENABLED = false
+export const ATMOSPHERES_ENABLED = true
 
 
 // ---- PLANET CONSTANTS ----

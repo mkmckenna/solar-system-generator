@@ -1,14 +1,10 @@
 ### Refactor
-- Install code style enforcer
 - Improve documentation
 
-### Bugs
-- Planets can spawn inside, too close to the star, or in other planets orbital path
-
 ### Features
+- Atmosphere color based on elements and planet type
 - Light from star
 - Random textures on stars
-- Atmosphere based on planet type
 - Star sizes depending on star type
 - Asteroids
 - MOONS!

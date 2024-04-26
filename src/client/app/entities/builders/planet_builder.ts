@@ -83,7 +83,7 @@ export class PlanetBuilder {
      * to the star, not too far away, and not too close to other planets.
      */
     private createRandomPlanetPlacement(planet: Planet, solarSystem: SolarSystem): THREE.Vector3 {
-        const starRadius = solarSystem.star.getRadius()
+        const starRadius = solarSystem.star.radius
 
         let x = MathUtils.randInt(starRadius * MIN_DISTANCE_MULTIPLIER_FROM_STAR, starRadius * MAX_DISTANCE_MULTIPLIER_FROM_STAR)
 

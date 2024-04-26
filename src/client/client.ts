@@ -9,6 +9,10 @@ import { SolarSystem } from './app/entities/solar_system'
 export const modelLoader = new GLTFLoader()
 export const textureLoader = new THREE.TextureLoader()
 
+/**
+ * The App class is the main class of the application. It is responsible
+ * for setting up the scene, camera, renderer, and lighting.
+ */
 export class App {
 
     public renderer: THREE.WebGLRenderer
@@ -80,6 +84,10 @@ export class App {
         return camera
     }
 
+    /**
+     * Main render loop. 
+     * This method is called on each frame to render.
+     */
     render() {
         requestAnimationFrame(this.render)
         this.renderer.render(this.scene, this.camera)

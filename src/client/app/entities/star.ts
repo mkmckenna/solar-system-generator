@@ -1,7 +1,5 @@
 import * as THREE from 'three'
-import { MathUtils } from 'three'
-import { ATMOSPHERES_ENABLED, STAR_RADIUS_MAX, STAR_RADIUS_MIN, WIREFRAME } from '../constants'
-import { getRandomMapValue } from '../utils/utils'
+import { ATMOSPHERES_ENABLED, WIREFRAME } from '../constants'
 import { Entity, EntityType } from './entity'
 
 import coronaFragmentShader from '../shaders/stars/corona_fragment_shader.glsl'
@@ -9,18 +7,17 @@ import surfaceFragmentShader from '../shaders/stars/surface_fragment_shader.glsl
 import vertexShader from '../shaders/vertex_shader.glsl'
 
 export enum StarType {
-    RedGiant = "RedGiant",
-    Yellow = "Yellow",
-    Dwarf = "Dwarf",
+    RedGiant = "red_giant",
+    Yellow = "yellow",
+    Dwarf = "dwarf",
 }
 
 export class Star extends Entity {
 
-    private _starType: StarType
-    private _radius: number
-    private _coronaScale: number
-    private _rotationSpeed = 0.0
-    private _starColor: THREE.Color = new THREE.Color(0xffffff)
+    public starType: StarType = StarType.Yellow
+    public radius: number = 0.0
+    public rotationSpeed = 0.0
+    public starColor: THREE.Color = new THREE.Color(0xffffff)
 
     private starColors: Map<StarType, THREE.Color> = new Map([
         [StarType.RedGiant, new THREE.Color(0xe67f77)],
@@ -31,22 +28,14 @@ export class Star extends Entity {
     constructor() {
         super()
         this.type = EntityType.Star
-        this._starType = this.selectStarType()
-
-        // TODO: Move to a builder class
-        this._radius = MathUtils.randInt(STAR_RADIUS_MIN, STAR_RADIUS_MAX)
-        this._coronaScale = Math.random() + 1.5;
-        this._rotationSpeed = Math.random() * 0.01
-        this._starColor = getRandomMapValue(this.starColors)
-
-        this.object = this.init();
+        this.starColor = this.starColors.get(this.starType) || new THREE.Color(0xffffff)
     }
 
     init(): THREE.Object3D {
         const star = new THREE.Mesh()
 
         // Geometry
-        star.geometry = new THREE.SphereGeometry(this._radius, 32, 16)
+        star.geometry = new THREE.SphereGeometry(this.radius, 32, 16)
 
         // Surface
         star.material = new THREE.ShaderMaterial({
@@ -54,24 +43,20 @@ export class Star extends Entity {
             fragmentShader: surfaceFragmentShader,
             wireframe: WIREFRAME,
             uniforms: {
-                r: { value: this._starColor.r },
-                g: { value: this._starColor.g },
-                b: { value: this._starColor.b },
+                r: { value: this.starColor.r },
+                g: { value: this.starColor.g },
+                b: { value: this.starColor.b },
             }
         })
 
         if (ATMOSPHERES_ENABLED) {
             const coronaMaterial = this.createCorona()
             const corona = new THREE.Mesh(star.geometry, coronaMaterial)
-            corona.scale.set(this._coronaScale, this._coronaScale, this._coronaScale)
+            corona.scale.set(1.5, 1.5, 1.5)
             star.add(corona)
         }
 
         return star
-    }
-
-    selectStarType(): StarType {
-        return StarType.RedGiant
     }
 
     createCorona(): THREE.ShaderMaterial {
@@ -82,9 +67,9 @@ export class Star extends Entity {
             side: THREE.BackSide,
             wireframe: WIREFRAME,
             uniforms: {
-                r: { value: this._starColor.r },
-                g: { value: this._starColor.g },
-                b: { value: this._starColor.b },
+                r: { value: this.starColor.r },
+                g: { value: this.starColor.g },
+                b: { value: this.starColor.b },
             }
         })
         return coronaMaterial
@@ -96,19 +81,7 @@ export class Star extends Entity {
         return light
     }
 
-    getRadius(): number {
-        return this._radius * this._coronaScale
-    }
-
     update(): void {
-        this.object.rotation.y += this._rotationSpeed
-    }
-
-    public get radius(): number {
-        return this._radius
-    }
-
-    public get coronaScale(): number {
-        return this._coronaScale
+        this.object.rotation.y += this.rotationSpeed
     }
 }

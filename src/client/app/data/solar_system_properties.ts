@@ -4,7 +4,7 @@ import * as planetData from './solar_system_properties.json'
 
 export interface SolarSystemProperties {
     stars: {
-        [starType: string]: SolarSystemProperties
+        [starType: string]: StarProperties
     }
     planets: {
         [planetType: string]: PlanetProperties
