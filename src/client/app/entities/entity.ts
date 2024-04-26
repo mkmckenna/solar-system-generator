@@ -20,17 +20,21 @@ export abstract class Entity {
      * render. It should be used to update the state of the entity,
      * perform animations, etc.
      */
-    update(): void {}
+    update(): void { }
 
-    onClick(): void {}
-    onMouseOver(): void {}
-    onMouseLeave(): void {}
+    /**
+     * The onClick, onMouseOver, and onMouseLeave methods are called
+     * when the user interacts with the entity in the scene.
+     */
+    onClick(): void { }
+    onMouseOver(): void { }
+    onMouseLeave(): void { }
 
     /**
      * The object property is the THREE.Object3D instance that
      * represents the entity in the scene.
      */
-    set object( object: THREE.Object3D ) {
+    set object(object: THREE.Object3D) {
         object.userData = {
             entity: this
         }

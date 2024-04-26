@@ -1,9 +1,10 @@
 import * as THREE from 'three'
-import * as cursor from '../client/app/cursor'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import * as cursor from '../client/app/cursor'
 import { GRID } from './app/constants'
-import { SolarSystem, SolarSystemBuilder } from './app/entities/solar_system';
+import { SolarSystemBuilder } from './app/entities/builders/solar_system_builder'
+import { SolarSystem } from './app/entities/solar_system'
 
 export const modelLoader = new GLTFLoader()
 export const textureLoader = new THREE.TextureLoader()
@@ -24,16 +25,16 @@ export class App {
         // Camera
         this.camera = this.createCamera()
         // Lighting
-        this.scene.add( this.createLighting() )
+        this.scene.add(this.createLighting())
         // Controls
-        new OrbitControls( this.camera, this.renderer.domElement )
+        new OrbitControls(this.camera, this.renderer.domElement)
 
         // Build the solar system
         this.solarSystem = new SolarSystemBuilder().buildRandomSolarSystem()
 
-        this.solarSystem.entities.forEach( entity => {
-            this.scene.add( entity.object );
-        } )
+        this.solarSystem.entities.forEach(entity => {
+            this.scene.add(entity.object);
+        })
 
         // Bind the render method to this instance (need to understand this better)
         this.render = this.render.bind(this)
@@ -41,8 +42,8 @@ export class App {
     }
 
     createLighting(): THREE.Light {
-        const light = new THREE.AmbientLight( 0xffffff, 1 );
-        light.position.set( 0, 1, 0 );
+        const light = new THREE.AmbientLight(0xffffff, 1);
+        light.position.set(0, 1, 0);
         return light
     }
 
@@ -54,9 +55,9 @@ export class App {
         scene.add(axesHelper)
 
         // Grid
-        if( GRID ) {
+        if (GRID) {
             const gridHelper = new THREE.GridHelper(1000, 10)
-            scene.add(gridHelper) 
+            scene.add(gridHelper)
         }
 
         return scene
@@ -64,28 +65,28 @@ export class App {
 
     createRenderer(): THREE.WebGLRenderer {
         const renderer = new THREE.WebGLRenderer()
-        renderer.setSize( window.innerWidth, window.innerHeight )
-        document.body.appendChild( renderer.domElement )
+        renderer.setSize(window.innerWidth, window.innerHeight)
+        document.body.appendChild(renderer.domElement)
         return renderer
     }
 
     createCamera(): THREE.PerspectiveCamera {
-        const camera = new THREE.PerspectiveCamera( 
-            90, 
-            window.innerWidth / window.innerHeight, 
-            0.1, 
-            5000 )
-        camera.position.set(1000, 1000, 1000)
+        const camera = new THREE.PerspectiveCamera(
+            90,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            10000)
+        camera.position.set(0, 3000, 0)
         return camera
     }
 
     render() {
-        requestAnimationFrame( this.render )
-        this.renderer.render( this.scene, this.camera )
+        requestAnimationFrame(this.render)
+        this.renderer.render(this.scene, this.camera)
         // Update entities
-        this.solarSystem.entities.forEach( entity => {
+        this.solarSystem.entities.forEach(entity => {
             entity.update()
-        } )
+        })
     }
 }
 

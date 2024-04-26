@@ -13,7 +13,7 @@ export const ATMOSPHERES_ENABLED = false
 
 
 // ---- PLANET CONSTANTS ----
-export const PLANET_ORBIT_ENABLED = true
+export const PLANET_ORBIT_ENABLED = false
 // Distance from star
 export const MIN_PLANET_COUNT = 3
 export const MAX_PLANET_COUNT = 10
@@ -28,4 +28,4 @@ export const MAX_ORBITAL_VELOCITY = 0.002
 // ---- STAR CONSTANTS ----
 export const STAR_ENABLED = true
 export const STAR_RADIUS_MIN = 50
-export const STAR_RADIUS_MAX = 100
+export const STAR_RADIUS_MAX = 250
