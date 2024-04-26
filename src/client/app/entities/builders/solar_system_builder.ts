@@ -6,6 +6,10 @@ import { SolarSystem } from '../solar_system';
 import { PlanetBuilder } from './planet_builder';
 import { StarBuilder } from './star_builder';
 
+/**
+ * The SolarSystemBuilder class is responsible for building 
+ * an entire solar system.
+ */
 export class SolarSystemBuilder {
     buildRandomSolarSystem(): SolarSystem {
         const solarSystem = new SolarSystem()

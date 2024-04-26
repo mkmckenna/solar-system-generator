@@ -5,15 +5,15 @@
 
 // ---- DEBUG ----
 export const WIREFRAME = false
-export const GRID = true
+export const GRID = false
 
 // ---- SOLAR SYSTEM CONSTANTS ----
-export const SKYBOX_ENABLED = false
+export const SKYBOX_ENABLED = true
 export const ATMOSPHERES_ENABLED = true
 
 
 // ---- PLANET CONSTANTS ----
-export const PLANET_ORBIT_ENABLED = false
+export const PLANET_ORBIT_ENABLED = true
 // Distance from star
 export const MIN_PLANET_COUNT = 3
 export const MAX_PLANET_COUNT = 10

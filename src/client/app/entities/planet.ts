@@ -46,7 +46,7 @@ export class Planet extends Entity {
         if (ATMOSPHERES_ENABLED) {
             const atmosphereMaterial = this.createAtmosphere()
             const atmosphere = new THREE.Mesh(planet.geometry, atmosphereMaterial)
-            atmosphere.scale.set(1.2, 1.2, 1.2)
+            atmosphere.scale.set(1.1, 1.1, 1.1)
             planet.add(atmosphere)
         }
 

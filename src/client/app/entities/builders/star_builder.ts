@@ -16,7 +16,11 @@ export class StarBuilder {
         return star
     }
 
-    getRandomStarType(solarSystemProperties: SolarSystemProperties): StarType {
+    /**
+     * Get a random star type based on the probabilities defined in the solar system properties.
+     * If no probabilities are defined, a random star type is selected with equal probability.
+     */
+    getRandomStarType(solarSystemProperties?: SolarSystemProperties): StarType {
         const starTypes = Object.keys(StarType);
 
         let selectedStarTypeString: string = ""
@@ -46,6 +50,10 @@ export class StarBuilder {
         }
     }
 
+    /**
+     * Get a random star size based on the star size property bounds defined in 
+     * the solar system properties.
+     */
     getRandomStarSize(starType: StarType): number {
         const star = solarSystemProperties.stars[starType]
         return MathUtils.randInt(star.size.min, star.size.max)

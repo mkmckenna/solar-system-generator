@@ -2,6 +2,9 @@
 - Improve documentation
 
 ### Features
+- Larger hit boxes on entities
+- Focus on entities
+- Probability of atmospheres for planet types
 - Atmosphere color based on elements and planet type
 - Light from star
 - Random textures on stars
