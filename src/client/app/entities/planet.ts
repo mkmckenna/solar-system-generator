@@ -46,7 +46,7 @@ export class Planet extends Entity {
         // Geometry
         planet.geometry = new THREE.SphereGeometry( this.radius, 32, 16 )
         // Surface
-        planet.material = new THREE.MeshPhongMaterial( { map: texture } )
+        planet.material = new THREE.MeshStandardMaterial( { map: texture } )
 
         // Atmosphere
         if( ATMOSPHERES_ENABLED ) {
@@ -97,6 +97,24 @@ export class Planet extends Entity {
         const texturePath = 'textures/planets/' + textureName
         let texture = textureLoader.load(texturePath)
         return texture
+    }
+
+    onClick(): void {
+        console.log("Planet clicked")
+    }
+
+    onMouseOver(): void {
+        if( this.object instanceof THREE.Mesh ) {
+            this.object.material.emissive.setHex( 0x666666 )
+            this.object.material.emissiveIntensity = 0.4
+        }
+    }
+
+    onMouseLeave(): void {
+        if( this.object instanceof THREE.Mesh ) {
+            this.object.material.emissive.setHex( 0x000000 )
+            this.object.material.emissiveIntensity = 0
+        }
     }
 
     /**

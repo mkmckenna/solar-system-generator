@@ -13,7 +13,7 @@ This is a small fun project that I've used to help learn the basics about 3D ren
 Entry point `client.ts`
 
 ## Acknowledgments
-Planet textures - https://www.texturesforplanets.com
+Planet textures - https://www.texturesforplanets.com: A great tool for generating planet textures.
 
 ## Three.JS Notes
 

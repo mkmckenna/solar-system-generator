@@ -22,6 +22,10 @@ export abstract class Entity {
      */
     update(): void {}
 
+    onClick(): void {}
+    onMouseOver(): void {}
+    onMouseLeave(): void {}
+
     /**
      * The object property is the THREE.Object3D instance that
      * represents the entity in the scene.
