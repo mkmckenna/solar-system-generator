@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import {
     ATMOSPHERES_ENABLED,
-    PLANET_ORBIT_ENABLED, WIREFRAME
+    PLANET_ORBIT_ENABLED, PLANET_ROTATION_ENABLED, WIREFRAME
 } from '../constants'
 
 // Shaders
@@ -57,7 +57,9 @@ export class Planet extends Entity {
     }
 
     update(): void {
-        this.object.rotation.y += this.rotationSpeed
+        if (PLANET_ROTATION_ENABLED) {
+            this.object.rotation.y += this.rotationSpeed
+        }
         if (PLANET_ORBIT_ENABLED) {
             this.animateOrbit()
         }
@@ -94,7 +96,8 @@ export class Planet extends Entity {
     }
 
     onClick(): void {
-        console.log("Planet clicked")
+        // app.focusedEntity = this
+        // this.lookAt()
     }
 
     onMouseOver(): void {
