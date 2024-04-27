@@ -2,8 +2,9 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { GRID } from './app/constants'
-import * as cursor from './app/cursor'
+import { Cursor } from './app/cursor'
 import { SolarSystemBuilder } from './app/entities/builders/solar_system_builder'
+import { Entity } from './app/entities/entity'
 import { SolarSystem } from './app/entities/solar_system'
 
 export const modelLoader = new GLTFLoader()
@@ -18,6 +19,10 @@ export class App {
     public renderer: THREE.WebGLRenderer
     public scene: THREE.Scene
     public camera: THREE.PerspectiveCamera
+    public controls: OrbitControls
+    public cursor: Cursor
+
+    private _focusedEntity: Entity | null = null
 
     public solarSystem: SolarSystem
 
@@ -31,7 +36,7 @@ export class App {
         // Lighting
         this.scene.add(this.createLighting())
         // Controls
-        new OrbitControls(this.camera, this.renderer.domElement)
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement)
 
         // Build the solar system
         this.solarSystem = new SolarSystemBuilder().buildRandomSolarSystem()
@@ -39,6 +44,8 @@ export class App {
         this.solarSystem.entities.forEach(entity => {
             this.scene.add(entity.object);
         })
+
+        this.cursor = new Cursor()
 
         // Bind the render method to this instance (need to understand this better)
         this.render = this.render.bind(this)
@@ -95,9 +102,17 @@ export class App {
         this.solarSystem.entities.forEach(entity => {
             entity.update()
         })
+        // Update camera
+        this.focusedEntity?.lookAt()
+    }
+
+    get focusedEntity(): Entity | null {
+        return this._focusedEntity
+    }
+
+    set focusedEntity(entity: Entity | null) {
+        this._focusedEntity = entity
     }
 }
 
 export const app = new App()
-
-cursor.init()
