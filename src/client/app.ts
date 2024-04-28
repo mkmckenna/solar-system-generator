@@ -22,6 +22,9 @@ export class App {
     public controls: OrbitControls
     public cursor: Cursor
 
+    /**
+     * The entity the camera is currently focused on within the scene.
+     */
     private _focusedEntity: Entity | null = null
 
     public solarSystem: SolarSystem
@@ -103,7 +106,10 @@ export class App {
             entity.update()
         })
         // Update camera
-        this.focusedEntity?.lookAt()
+        this.focusedEntity?.updateFocus()
+
+        // Update the camera controls
+        this.controls.update()
     }
 
     get focusedEntity(): Entity | null {
