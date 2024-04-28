@@ -31,8 +31,9 @@ export abstract class Entity {
     onMouseOver(): void { }
     onMouseLeave(): void { }
 
-    private i = 0;
-
+    /**
+     * Set the camera to look at the entity
+     */
     lookAt(): void {
         // Bounding box of the object
         const box = new THREE.Box3().setFromObject(this.object);
@@ -50,6 +51,9 @@ export abstract class Entity {
         app.controls.target.copy(this.object.position)
     }
 
+    /**
+     * Call to update the focus of the camera on the current entity
+     */
     updateFocus() {
         app.controls.target.copy(this.object.position)
     }

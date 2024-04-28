@@ -40,7 +40,10 @@ export class Planet extends Entity {
         // Geometry
         planet.geometry = new THREE.SphereGeometry(this.radius, 32, 16)
         // Surface
-        planet.material = new THREE.MeshStandardMaterial({ map: texture })
+        planet.material = new THREE.MeshStandardMaterial({
+            map: texture,
+            wireframe: WIREFRAME
+        })
 
         // Atmosphere
         if (ATMOSPHERES_ENABLED) {
@@ -96,8 +99,11 @@ export class Planet extends Entity {
     }
 
     onClick(): void {
-        app.focusedEntity = this
-        this.lookAt()
+        if (app.focusedEntity !== this) {
+            console.log(this)
+            app.focusedEntity = this
+            this.lookAt()
+        }
     }
 
     onMouseOver(): void {
