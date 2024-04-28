@@ -71,9 +71,9 @@ export class PlanetBuilder {
         }
 
         switch (selectedPlanetTypeString) {
-            case "Gas": return PlanetType.Gas
-            case "Ice": return PlanetType.Ice
-            case "Rock": return PlanetType.Rock
+            case "gas": return PlanetType.Gas
+            case "ice": return PlanetType.Ice
+            case "rock": return PlanetType.Rock
             default: return PlanetType.Rock
         }
     }
