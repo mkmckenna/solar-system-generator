@@ -43,9 +43,9 @@ export class StarBuilder {
         }
 
         switch (selectedStarTypeString) {
-            case "RedGiant": return StarType.RedGiant
-            case "Yellow": return StarType.Yellow
-            case "Dwarf": return StarType.Dwarf
+            case "red_giant": return StarType.RedGiant
+            case "yellow": return StarType.Yellow
+            case "dwarf": return StarType.Dwarf
             default: return StarType.Yellow
         }
     }
