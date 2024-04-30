@@ -1,6 +1,6 @@
 # Solar System Generator
 
-Procedurally generate different solar systems with different star and planet types.
+Procedurally generate different solar systems with different stars and planets.
 
 This is a small fun project that I've used to help learn the basics about 3D rendering and modeling and might be of interest to others looking to do the same.
 
