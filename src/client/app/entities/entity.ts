@@ -14,6 +14,11 @@ export abstract class Entity {
     public type!: EntityType; // Could be readonly. EntityType should never change
     private _object!: THREE.Object3D;
 
+    /**
+     * Stores the delta position of the entity between render cycles
+     */
+    readonly positionDelta = new THREE.Vector3();
+
     abstract init(): THREE.Object3D;
 
     /**
@@ -56,6 +61,7 @@ export abstract class Entity {
      */
     updateFocus() {
         app.controls.target.copy(this.object.position)
+        app.camera.position.add(this.positionDelta)
     }
 
     /**

@@ -106,6 +106,8 @@ export class App {
             entity.update()
         })
         // Update camera
+        // REFACTOR: This should be handled by the cursor class as
+        // we are moving the camera based on the state of the system
         this.focusedEntity?.updateFocus()
 
         // Update the camera controls

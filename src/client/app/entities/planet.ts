@@ -53,7 +53,7 @@ export class Planet extends Entity {
             planet.add(atmosphere)
         }
 
-        // Angle (might not be calculated correctly, see animateOrbit()
+        // Is this just setting a random initial position (angle) from the sun?
         this.angle = Math.random() * Math.PI * 2
 
         return planet
@@ -68,16 +68,24 @@ export class Planet extends Entity {
         }
     }
 
+    /**
+     * Animate the orbit of the planet around the sun.
+     */
     animateOrbit(): void {
         // Assuming 'radius' and 'angle' are properties of 'this' that are already set
-        let radius = Math.sqrt(this.position.x ** 2 + this.position.z ** 2); // Calculate radius if not set
+        let radius = Math.sqrt(this.position.x ** 2 + this.position.z ** 2) // Calculate radius if not set
 
         // Increment the angle
-        this.angle += this.orbitalVelocity;
+        this.angle += this.orbitalVelocity
 
         // Calculate new position
-        this.position.x = radius * Math.cos(this.angle); // Update x using cos
-        this.position.z = radius * Math.sin(this.angle); // Update z using sin
+        let x = radius * Math.cos(this.angle) // Update x using cos
+        let z = radius * Math.sin(this.angle) // Update z using sin
+
+        let newPosition = new THREE.Vector3(x, this.position.y, z)
+        this.positionDelta.copy(newPosition).sub(this.position)
+
+        this.position = newPosition
     }
 
     createAtmosphere(): THREE.ShaderMaterial {
