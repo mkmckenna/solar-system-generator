@@ -18,6 +18,8 @@ export class Cursor {
         window.addEventListener('click', this.onClick);
     }
 
+    private intersectedEntity: Entity | null = null;
+
     private onPointerMove(event: MouseEvent) {
         // calculate pointer position in normalized device coordinates
         // (-1 to +1) for both components
@@ -27,22 +29,24 @@ export class Cursor {
         this.raycaster.setFromCamera(this.pointer, app.camera);
         const intersects = this.raycaster.intersectObjects(app.scene.children, true);
 
-        let intersectedEntity: Entity | null = null;
-
         if (intersects.length > 0) {
             let isEntity = intersects[0].object.userData.entity !== undefined;
 
-            if (isEntity && intersectedEntity != intersects[0].object.userData.entity) {
-                intersectedEntity = intersects[0].object.userData.entity;
-                if (intersectedEntity !== null) {
-                    intersectedEntity.onMouseOver();
+            if (isEntity && this.intersectedEntity != intersects[0].object.userData.entity) {
+                if (this.intersectedEntity !== null) {
+                    this.intersectedEntity.onMouseLeave();
+                }
+
+                this.intersectedEntity = intersects[0].object.userData.entity;
+                if (this.intersectedEntity !== null) {
+                    this.intersectedEntity.onMouseOver();
                 }
             }
         } else {
-            // if( intersectedEntity !== null ) {
-            //     intersectedEntity.onMouseLeave();
-            //     intersectedEntity = null;
-            // }
+            if (this.intersectedEntity !== null) {
+                this.intersectedEntity.onMouseLeave();
+                this.intersectedEntity = null;
+            }
         }
     }
 
