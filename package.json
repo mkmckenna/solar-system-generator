@@ -9,18 +9,17 @@
   "author": "Martin McKenna",
   "license": "ISC",
   "devDependencies": {
-    "@types/dat.gui": "^0.7.7",
-    "@types/three": "^0.163.0",
-    "three": "^0.163.0",
-    "ts-loader": "^9.2.6",
-    "ts-shader-loader": "^1.0.6",
-    "typescript": "^4.4.4",
-    "webpack": "^5.62.1",
-    "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^4.4.0",
-    "webpack-merge": "^5.8.0"
+    "@types/dat.gui": "^0.7.13",
+    "@types/three": "^0.164.0",
+    "three": "^0.164.1",
+    "ts-loader": "^9.5.1",
+    "ts-shader-loader": "^2.0.2",
+    "typescript": "^5.4.5",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4",
+    "webpack-merge": "^5.10.0"
   },
   "dependencies": {
-    "@enable3d/ammo-physics": "^0.23.0"
   }
 }
