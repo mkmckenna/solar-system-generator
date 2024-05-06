@@ -14,7 +14,7 @@ export const ATMOSPHERES_ENABLED = true
 
 
 // ---- PLANET CONSTANTS ----
-export const PLANET_ROTATION_ENABLED = false
+export const PLANET_ROTATION_ENABLED = true
 export const PLANET_ORBIT_ENABLED = true
 // Distance from star
 export const MIN_PLANET_COUNT = 3

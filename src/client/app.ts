@@ -6,6 +6,7 @@ import { Cursor } from './app/cursor'
 import { SolarSystemBuilder } from './app/entities/builders/solar_system_builder'
 import { Entity } from './app/entities/entity'
 import { SolarSystem } from './app/entities/solar_system'
+import { SolarSystemInfo } from './app/ui/info'
 
 export const modelLoader = new GLTFLoader()
 export const textureLoader = new THREE.TextureLoader()
@@ -38,6 +39,8 @@ export class App {
         this.camera = this.createCamera()
         // Controls
         this.controls = new OrbitControls(this.camera, this.renderer.domElement)
+        // Cursor
+        this.cursor = new Cursor()
 
         // Lighting
         this.scene.add(this.createAmbientLighting())
@@ -49,7 +52,8 @@ export class App {
             this.scene.add(entity.object);
         })
 
-        this.cursor = new Cursor()
+        // Info UI
+        SolarSystemInfo.renderSolarSystemInfo(this.solarSystem)
 
         // Bind the render method to this instance (need to understand this better)
         this.render = this.render.bind(this)

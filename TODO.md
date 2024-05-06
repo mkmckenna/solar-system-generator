@@ -6,12 +6,10 @@
 ## Refactoring
 
 ## Features
-- Get debug UI going
 - Light from star
 - Planets orbit faster, closer to sun
 - Larger planets generally rotate slower
 - Larger hit boxes on entities
-- Focus on entities
 - Probability of atmospheres for planet types
 - Atmosphere color based on elements and planet type
 - Random textures on stars
