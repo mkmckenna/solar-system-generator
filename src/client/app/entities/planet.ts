@@ -9,6 +9,7 @@ import { app, textureLoader } from '../../app'
 import atmosphereFragmentShader from '../shaders/planets/atmosphere_fragment_shader.glsl'
 import vertexShader from '../shaders/vertex_shader.glsl'
 
+import * as dat from 'dat.gui'
 import { planetProperties } from '../data/solar_system_properties'
 import { getRandomArrayElement } from '../utils/utils'
 import { Entity, EntityType } from './entity'
@@ -22,11 +23,11 @@ export enum PlanetType {
 export class Planet extends Entity {
 
     public planetType: PlanetType = PlanetType.Rock
+    public radius = 0.0
+    public atmosphereRadius = 0.0
     public rotationSpeed = 0.0
     public orbitalVelocity = 0.0
     public angle = 0.0
-    public radius = 0.0
-    public atmosphereRadius = 0.0
 
     constructor() {
         super()
@@ -108,11 +109,20 @@ export class Planet extends Entity {
         return texture
     }
 
+    getDebugUI(): dat.GUI {
+        const ui = new dat.GUI()
+        ui.add(this, 'rotationSpeed', 0, 0.01).name('Rotation Speed')
+        ui.add(this, 'orbitalVelocity', 0, 0.005).name('Orbital Velocity')
+        return ui
+    }
+
+
     onClick(): void {
         if (app.focusedEntity !== this) {
             console.log(this)
             app.focusedEntity = this
             this.lookAt()
+            this.getDebugUI()
         }
     }
 
