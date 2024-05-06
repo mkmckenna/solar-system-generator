@@ -4,6 +4,7 @@
  */
 
 // ---- DEBUG ----
+export const DEBUG_UI = false
 export const WIREFRAME = false
 export const GRID = false
 

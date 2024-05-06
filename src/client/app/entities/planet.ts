@@ -26,6 +26,7 @@ export class Planet extends Entity {
     public orbitalVelocity = 0.0
     public angle = 0.0
     public radius = 0.0
+    public atmosphereRadius = 0.0
 
     constructor() {
         super()
@@ -33,14 +34,14 @@ export class Planet extends Entity {
     }
 
     init(): THREE.Object3D {
-        const planet = new THREE.Mesh()
+        const surface = new THREE.Mesh()
 
         // Texture
         const texture = this.getTextureForPlanetType(this.planetType)
         // Geometry
-        planet.geometry = new THREE.SphereGeometry(this.radius, 32, 16)
+        surface.geometry = new THREE.SphereGeometry(this.radius, 32, 16)
         // Surface
-        planet.material = new THREE.MeshStandardMaterial({
+        surface.material = new THREE.MeshStandardMaterial({
             map: texture,
             wireframe: WIREFRAME
         })
@@ -48,15 +49,16 @@ export class Planet extends Entity {
         // Atmosphere
         if (ATMOSPHERES_ENABLED) {
             const atmosphereMaterial = this.createAtmosphere()
-            const atmosphere = new THREE.Mesh(planet.geometry, atmosphereMaterial)
-            atmosphere.scale.set(1.1, 1.1, 1.1)
-            planet.add(atmosphere)
+            const atmosphere = new THREE.Mesh(surface.geometry, atmosphereMaterial)
+            this.atmosphereRadius = this.radius * 1.1
+            atmosphere.geometry = new THREE.SphereGeometry(this.atmosphereRadius, 32, 16)
+            surface.add(atmosphere)
         }
 
         // Is this just setting a random initial position (angle) from the sun?
         this.angle = Math.random() * Math.PI * 2
 
-        return planet
+        return surface
     }
 
     update(): void {
@@ -117,7 +119,7 @@ export class Planet extends Entity {
     onMouseOver(): void {
         if (this.object instanceof THREE.Mesh) {
             this.object.material.emissive.setHex(0x666666)
-            this.object.material.emissiveIntensity = 0.4
+            this.object.material.emissiveIntensity = 0.1
         }
     }
 
