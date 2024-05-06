@@ -36,10 +36,11 @@ export class App {
         this.renderer = this.createRenderer()
         // Camera
         this.camera = this.createCamera()
-        // Lighting
-        this.scene.add(this.createLighting())
         // Controls
         this.controls = new OrbitControls(this.camera, this.renderer.domElement)
+
+        // Lighting
+        this.scene.add(this.createAmbientLighting())
 
         // Build the solar system
         this.solarSystem = new SolarSystemBuilder().buildRandomSolarSystem()
@@ -55,10 +56,25 @@ export class App {
         this.render()
     }
 
-    createLighting(): THREE.Light {
-        const light = new THREE.AmbientLight(0xffffff, 1);
-        light.position.set(0, 1, 0);
-        return light
+    /**
+     * Creates an ambient light source to light the scene. This is to make
+     * sure the scene is not just lit from the star. Although this would be
+     * more realistic, it would make it hard to see the planets.
+     */
+    createAmbientLighting(): THREE.AmbientLight {
+        return new THREE.AmbientLight(0xffffff, 0.4)
+    }
+
+    createSpotlight(): THREE.SpotLight {
+        const spotlight = new THREE.SpotLight(0xffffff, 1, 6, Math.PI / 4, 0)
+        spotlight.position.set(0, 0, 0)
+        return spotlight
+    }
+
+    createPointLight(): THREE.PointLight {
+        const pointLight = new THREE.PointLight(0xffffff, 1, 0, 2)
+        pointLight.position.set(0, 0, 0)
+        return pointLight
     }
 
     createScene(): THREE.Scene {
@@ -90,9 +106,21 @@ export class App {
             window.innerWidth / window.innerHeight,
             0.1,
             10000)
-        camera.position.set(1000, 1000, 1000)
+        camera.position.set(100, 100, 100)
         return camera
     }
+
+    /**
+     * Useful for testing lighting and positioning of objects.
+     */
+    createDebugCube(): THREE.Mesh {
+        const debugCube = new THREE.Mesh(
+            new THREE.BoxGeometry(30, 30, 30),
+            new THREE.MeshPhongMaterial({ color: 0x666666 }))
+        debugCube.position.set(0, 0, 30)
+        return debugCube
+    }
+
 
     /**
      * Main render loop. 
