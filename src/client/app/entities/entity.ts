@@ -37,6 +37,14 @@ export abstract class Entity {
     onMouseLeave(): void { }
 
     /**
+     * Get the debug UI for the entity. This can be used to adjust the 
+     * entities properties in real-time.
+     */
+    getDebugUI(): dat.GUI | null {
+        return null;
+    }
+
+    /**
      * Set the camera to look at the entity
      */
     lookAt(): void {
