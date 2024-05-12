@@ -1,5 +1,6 @@
 ## Bugs
 Some atmospheres are not transparent
+Context windows can be dragged off the viewport bounds
 
 ## Ongoing
 - Improve documentation
