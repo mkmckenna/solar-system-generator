@@ -5,7 +5,7 @@ import { customElement } from 'lit-element/decorators.js';
 export class ContextWindow extends LitElement {
 
     static styles = css`
-        .context-window {
+        :host {
             position: fixed;
             top: 25%;
             left: 0;
@@ -53,21 +53,40 @@ export class ContextWindow extends LitElement {
     title = 'Title Test';
     contextWindow: HTMLElement | undefined | null = null;
 
-    // drag = new DragController(this, {
-    //     getContainerEl: () => this.shadowRoot.querySelector("#window"),
-    //     getDraggableEl: () => this.getDraggableEl(),
-    // });
+    private dragging = false;
+    private startX = 0;
+    private startY = 0;
+    private currentX = 0;
+    private currentY = 0;
 
-    // async getDraggableEl() {
-    //     await this.updateComplete;
-    //     return this.shadowRoot.querySelector("#draggable");
-    // }
+    private onDragStart(e: MouseEvent) {
+        this.dragging = true;
+        this.startX = e.clientX - this.currentX;
+        this.startY = e.clientY - this.currentY;
+        console.log('drag start');
+        window.addEventListener('mousemove', this.onDragging.bind(this));
+        window.addEventListener('mouseup', this.onDragEnd.bind(this));
+    }
+
+    private onDragging(e: MouseEvent) {
+        if (!this.dragging) return;
+        this.currentX = e.clientX - this.startX;
+        this.currentY = e.clientY - this.startY;
+        console.log("currentX: ", this.currentX, "currentY: ", this.currentY);
+        this.style.transform = `translate(${this.currentX}px, ${this.currentY}px)`;
+    }
+
+    private onDragEnd() {
+        this.dragging = false;
+        window.removeEventListener('mousemove', this.onDragging.bind(this));
+        window.removeEventListener('mouseup', this.onDragEnd.bind(this));
+    }
 
     render() {
         return html`
             <div class="context-window">
                 <div class="header"
-                    @mousedown="${this.handleDragStart}">
+                    @mousedown="${this.onDragStart}">
                     <p class="header-title">${this.title}</p>
                     <button class="close"
                     @mousedown=${this.close}>X</button>
@@ -78,45 +97,6 @@ export class ContextWindow extends LitElement {
             </div>
         `;
     }
-
-    private initialX = 0;
-    private initialY = 0;
-    private dragOffsetX = 0;
-    private dragOffsetY = 0;
-    private dragging = false;
-
-    handleDragStart(event: MouseEvent) {
-        this.initialX = event.clientX;
-        this.initialY = event.clientY;
-        const rect = this.getBoundingClientRect();
-        this.dragOffsetX = this.initialX - rect.left;
-        this.dragOffsetY = this.initialY - rect.top;
-        this.dragging = true;
-
-        console.log(event)
-        console.log("x: " + event.x, "y: " + event.y)
-        // console.log("left: " + rect.left, "top: " + )
-        console.log("corner x: " + (event.target), "corner y: " + (event.target?.y))
-
-        window.addEventListener('mousemove', this.handleDragging);
-        window.addEventListener('mouseup', this.handleDragEnd);
-        event.preventDefault(); // Prevents unwanted text selection
-    }
-
-    handleDragging = (event: MouseEvent) => {
-        if (!this.dragging) return;
-        const newX = event.clientX - this.dragOffsetX;
-        const newY = event.clientY - this.dragOffsetY;
-
-        this.style.left = `${newX}px`;
-        this.style.top = `${newY}px`;
-    };
-
-    handleDragEnd = () => {
-        this.dragging = false;
-        window.removeEventListener('mousemove', this.handleDragging);
-        window.removeEventListener('mouseup', this.handleDragEnd);
-    };
 
     close() {
         this.remove();
