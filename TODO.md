@@ -1,4 +1,5 @@
 ## Bugs
+Some atmospheres are not transparent
 
 ## Ongoing
 - Improve documentation
