@@ -8,6 +8,10 @@ import { SolarSystem } from '../solar_system'
 
 
 export class PlanetBuilder {
+
+    /**
+     * Builds a `Planet` based on the given parameters.
+     */
     buildPlanet(planetType: PlanetType,
         position: THREE.Vector3,
         rotationSpeed: number,
@@ -28,7 +32,8 @@ export class PlanetBuilder {
     }
 
     /**
-     * Builds a random planet based on the properties defined in solar_system_properties.json
+     * Builds a `Planet` with random properties. Property bounds are defined 
+     * in `solar_system_properties.json` data file.
      */
     buildRandomPlanet(solarSystem: SolarSystem): Planet {
         const planet = new Planet()
@@ -45,7 +50,7 @@ export class PlanetBuilder {
     }
 
     /**
-     * Gets a random planet type based on the probabilities defined in solar_system_properties.json.
+     * Gets a random `PlanetType` based on the probabilities defined in `solar_system_properties.json`.
      * If no probabilities are defined, a random planet type is returned.
      */
     private getRandomPlanetType(solarSystemProperties?: SolarSystemProperties): PlanetType {
@@ -79,7 +84,7 @@ export class PlanetBuilder {
     }
 
     /**
-     * Generates a random Vec3 position for a planet so that it is not too close 
+     * Generates a random `Vec3` position for a planet so that it is not too close 
      * to the star, not too far away, and not too close to other planets.
      */
     private createRandomPlanetPlacement(planet: Planet, solarSystem: SolarSystem): THREE.Vector3 {
