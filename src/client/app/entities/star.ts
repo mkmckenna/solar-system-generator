@@ -6,6 +6,8 @@ import coronaFragmentShader from '../shaders/stars/corona_fragment_shader.glsl'
 import surfaceFragmentShader from '../shaders/stars/surface_fragment_shader.glsl'
 import vertexShader from '../shaders/vertex_shader.glsl'
 
+import { app } from '../../app'
+
 export enum StarType {
     RedGiant = "red_giant",
     Yellow = "yellow",
@@ -79,6 +81,29 @@ export class Star extends Entity {
         const light = new THREE.SpotLight(0xffffff, 1)
         light.position.set(0, 0, 0)
         return light
+    }
+
+    onClick(): void {
+        if (app.focusedEntity !== this) {
+            console.log(this)
+            app.focusedEntity = this
+            this.lookAt()
+            this.getDebugUI()
+        }
+    }
+
+    onMouseOver(): void {
+        if (this.object instanceof THREE.Mesh) {
+            // this.object.material.emissive.setHex(0x666666)
+            // this.object.material.emissiveIntensity = 0.1
+        }
+    }
+
+    onMouseLeave(): void {
+        if (this.object instanceof THREE.Mesh) {
+            // this.object.material.emissive.setHex(0x000000)
+            // this.object.material.emissiveIntensity = 0
+        }
     }
 
     update(): void {
