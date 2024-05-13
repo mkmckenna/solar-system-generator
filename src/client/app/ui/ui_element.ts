@@ -1,9 +1,9 @@
 import { LitElement, css, html } from 'lit-element';
-import { customElement } from 'lit-element/decorators.js';
 
-@customElement('context-window')
-export class ContextWindow extends LitElement {
-
+/**
+ * Base class for all UI elements.
+ */
+export abstract class UIElement extends LitElement {
     static styles = css`
         :host {
             position: fixed;
@@ -49,8 +49,7 @@ export class ContextWindow extends LitElement {
         }
     `;
 
-    // @property({ type: String })
-    title = 'Title Test';
+    title = '';
     contextWindow: HTMLElement | undefined | null = null;
 
     private dragging = false;
@@ -58,6 +57,10 @@ export class ContextWindow extends LitElement {
     private startY = 0;
     private currentX = 0;
     private currentY = 0;
+
+    protected static addElementToScreen(element: HTMLElement) {
+        document.body.appendChild(element);
+    }
 
     private onDragStart(e: MouseEvent) {
         this.dragging = true;
@@ -84,19 +87,19 @@ export class ContextWindow extends LitElement {
 
     render() {
         return html`
-            <div class="context-window">
-                <div class="header"
-                    @mousedown="${this.onDragStart}">
-                    <p class="header-title">${this.title}</p>
-                    <button class="close"
-                    @mousedown=${this.close}>X</button>
-                </div>
-                <div class="body">
-                    <slot></slot>
-                </div>
+            <div class="header"
+                @mousedown="${this.onDragStart}">
+                <p class="header-title">${this.title}</p>
+                <button class="close"
+                @mousedown=${this.close}>X</button>
+            </div>
+            <div class="body">
+                ${this.renderBody()}
             </div>
         `;
     }
+
+    abstract renderBody(): string | object | undefined | null;
 
     close() {
         this.remove();
