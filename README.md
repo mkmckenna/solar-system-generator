@@ -16,6 +16,7 @@ Run the following commands: `npm install` then `npm run dev`
 
 ## Acknowledgments
 Planet textures - https://www.texturesforplanets.com: A great tool for generating planet textures.
+ChatGPT (and their model training sources!) - For generating fictional solar system names etc
 
 ## Three.JS Notes
 
