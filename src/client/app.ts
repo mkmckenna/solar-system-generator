@@ -110,7 +110,7 @@ export class App {
             window.innerWidth / window.innerHeight,
             0.1,
             10000)
-        camera.position.set(100, 100, 100)
+        camera.position.set(1000, 1000, 1000)
         return camera
     }
 
