@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import {
     ATMOSPHERES_ENABLED,
+    DEBUG_UI,
     PLANET_ORBIT_ENABLED, PLANET_ROTATION_ENABLED, WIREFRAME
 } from '../constants'
 
@@ -11,6 +12,7 @@ import vertexShader from '../shaders/vertex_shader.glsl'
 
 import * as dat from 'dat.gui'
 import { planetProperties } from '../data/solar_system_properties'
+import { PlanetInfo } from '../ui/planet_info'
 import { getRandomArrayElement } from '../utils/utils'
 import { Entity, EntityType } from './entity'
 
@@ -122,7 +124,10 @@ export class Planet extends Entity {
             console.log(this)
             app.focusedEntity = this
             this.lookAt()
-            this.getDebugUI()
+            if (DEBUG_UI) {
+                this.getDebugUI()
+            }
+            PlanetInfo.create(this)
         }
     }
 
