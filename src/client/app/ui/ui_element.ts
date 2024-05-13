@@ -1,4 +1,6 @@
-import { LitElement, css, html } from 'lit-element';
+import { LitElement, PropertyValueMap, css, html } from 'lit-element';
+import { UIElementDragController } from './ui_element_drag_controller';
+import { UIElementResizeController } from './ui_element_resize_controller';
 
 /**
  * Base class for all UI elements.
@@ -7,24 +9,31 @@ export abstract class UIElement extends LitElement {
     static styles = css`
         :host {
             position: fixed;
-            top: 25%;
-            left: 0;
-            width: 500px;
-            min-width: 200px;
+            top: 20px;
+            left: 20px;
+
+            min-width: 400px;
             max-width: 100%;
-            height: 300px;
             min-height: 100px;
             max-height: 100%;
-            border-radius: 4px;
-            border: 3px solid rgba(255, 255, 255, 0.4);
+            
+            border-radius: 2px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
             background-color: rgba(50, 50, 75, 0.9);
+
             color: white;
+            font-size: 12px;
+            font-family: Arial, sans-serif;
+
+            resize: both; /* This CSS property can allow resizing but does not work perfectly with all layouts */
+            box-sizing: border-box;
         }
         .header {
             position: relative;
             background-color: rgba(15, 15, 25, 0.9);
-            border-bottom: 3px solid rgba(255, 255, 255, 0.4);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.4);
             padding: 5px;
+            font-size: 14px;
         }
         .header-title {
             margin: 0;
@@ -51,55 +60,37 @@ export abstract class UIElement extends LitElement {
 
     title = '';
     contextWindow: HTMLElement | undefined | null = null;
+    uiElementDragController: UIElementDragController | undefined | null = null;
+    uiElementResizeController: UIElementResizeController | undefined | null = null;
 
-    private dragging = false;
-    private startX = 0;
-    private startY = 0;
-    private currentX = 0;
-    private currentY = 0;
+    abstract renderBody(): string | object | undefined | null;
 
     protected static addElementToScreen(element: HTMLElement) {
         document.body.appendChild(element);
     }
 
-    private onDragStart(e: MouseEvent) {
-        this.dragging = true;
-        this.startX = e.clientX - this.currentX;
-        this.startY = e.clientY - this.currentY;
-        console.log('drag start');
-        window.addEventListener('mousemove', this.onDragging.bind(this));
-        window.addEventListener('mouseup', this.onDragEnd.bind(this));
+    protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+        this.uiElementDragController = new UIElementDragController(this);
+        this.uiElementResizeController = new UIElementResizeController(this);
+        this.uiElementResizeController.onConnected();
     }
 
-    private onDragging(e: MouseEvent) {
-        if (!this.dragging) return;
-        this.currentX = e.clientX - this.startX;
-        this.currentY = e.clientY - this.startY;
-        console.log("currentX: ", this.currentX, "currentY: ", this.currentY);
-        this.style.transform = `translate(${this.currentX}px, ${this.currentY}px)`;
-    }
-
-    private onDragEnd() {
-        this.dragging = false;
-        window.removeEventListener('mousemove', this.onDragging.bind(this));
-        window.removeEventListener('mouseup', this.onDragEnd.bind(this));
+    disconnectedCallback(): void {
+        super.disconnectedCallback();
+        this.uiElementResizeController?.onDisconnected();
     }
 
     render() {
         return html`
-            <div class="header"
-                @mousedown="${this.onDragStart}">
+            <div class="header">
                 <p class="header-title">${this.title}</p>
-                <button class="close"
-                @mousedown=${this.close}>X</button>
+                <button class="close" @mousedown=${this.close}>X</button>
             </div>
             <div class="body">
                 ${this.renderBody()}
             </div>
         `;
     }
-
-    abstract renderBody(): string | object | undefined | null;
 
     close() {
         this.remove();
