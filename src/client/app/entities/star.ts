@@ -109,4 +109,13 @@ export class Star extends Entity {
     update(): void {
         this.object.rotation.y += this.rotationSpeed
     }
+
+    getStarTypeString(): string {
+        switch (this.starType) {
+            case StarType.RedGiant: return "Red Giant"
+            case StarType.Yellow: return "Yellow"
+            case StarType.Dwarf: return "Dwarf"
+            default: return "Unknown"
+        }
+    }
 }
