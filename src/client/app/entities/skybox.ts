@@ -11,7 +11,7 @@ export class Skybox extends Entity {
     init(): THREE.Object3D {
         const skyboxGeometry = new THREE.BufferGeometry();
         const skyboxMaterial = new THREE.PointsMaterial({
-            color: 0xffffff,
+            color: 0x888888,
         });
 
         const starVertices = []
