@@ -1,6 +1,6 @@
 import { PlanetType } from '../entities/planet'
 import { StarType } from '../entities/star'
-import * as planetData from './solar_system_properties.json'
+import * as solarSystemPropertiesData from './solar_system_properties.json'
 
 export interface SolarSystemProperties {
     stars: {
@@ -31,7 +31,7 @@ export interface PlanetProperties {
     probability: number
 }
 
-export const solarSystemProperties = getSolarSystemProperties(planetData)
+export const solarSystemProperties = getSolarSystemProperties(solarSystemPropertiesData)
 export const planetProperties = solarSystemProperties.planets
 export const starProperties = solarSystemProperties.stars
 
