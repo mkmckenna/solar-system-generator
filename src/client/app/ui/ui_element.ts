@@ -9,8 +9,10 @@ export abstract class UIElement extends LitElement {
     static styles = css`
         :host {
             position: fixed;
-            top: 20px;
-            left: 20px;
+            bottom: 50px;
+            left: 50%;
+            right: 50%;
+            transform: translate(-50%, 0%);
 
             min-width: 400px;
             max-width: 100%;

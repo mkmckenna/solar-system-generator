@@ -6,7 +6,7 @@ import { Cursor } from './app/cursor'
 import { SolarSystemBuilder } from './app/entities/builders/solar_system_builder'
 import { Entity } from './app/entities/entity'
 import { SolarSystem } from './app/entities/solar_system'
-import { SolarSystemInfo } from './app/ui/info'
+import { SolarSystemInfo } from './app/ui/solar_system_info'
 
 export const modelLoader = new GLTFLoader()
 export const textureLoader = new THREE.TextureLoader()
@@ -53,7 +53,7 @@ export class App {
         })
 
         // Info UI
-        SolarSystemInfo.renderSolarSystemInfo(this.solarSystem)
+        SolarSystemInfo.create(this.solarSystem)
 
         // Bind the render method to this instance (need to understand this better)
         this.render = this.render.bind(this)
