@@ -14,6 +14,8 @@ export class SolarSystem {
     private _star = new Star()
     private _planets: Planet[] = []
 
+    name: string = 'Solar System Name'
+
     public get planets(): Planet[] {
         return this._planets
     }
