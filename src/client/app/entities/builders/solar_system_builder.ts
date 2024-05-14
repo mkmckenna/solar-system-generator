@@ -1,5 +1,6 @@
 import { MathUtils } from 'three';
 import { MAX_PLANET_COUNT, MIN_PLANET_COUNT, SKYBOX_ENABLED, STAR_ENABLED } from '../../constants';
+import { solarSystemNames } from '../../data/solar_system_properties';
 import { Planet } from '../planet';
 import { Skybox } from '../skybox';
 import { SolarSystem } from '../solar_system';
@@ -13,6 +14,8 @@ import { StarBuilder } from './star_builder';
 export class SolarSystemBuilder {
     buildRandomSolarSystem(): SolarSystem {
         const solarSystem = new SolarSystem()
+
+        solarSystem.name = this.getRandomSolarSystemName()
 
         // Star
         if (STAR_ENABLED) {
@@ -38,5 +41,14 @@ export class SolarSystemBuilder {
         console.log({ solarSystem })
 
         return solarSystem
+    }
+
+    /**
+     * Get random solar system name
+     */
+    private getRandomSolarSystemName(): string {
+        const randomIndex = Math.floor(Math.random() * solarSystemNames.solar_system_names.length)
+        console.log({ randomIndex })
+        return solarSystemNames.solar_system_names[randomIndex]
     }
 }
