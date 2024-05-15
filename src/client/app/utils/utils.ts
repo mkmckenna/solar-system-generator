@@ -1,18 +1,18 @@
-export function getRandomMapKey( map: Map<any, any> ): any {
+export function getRandomMapKey(map: Map<any, any>): any {
     const values = Array.from(map.keys())
     return values[Math.floor(Math.random() * values.length)]
 }
 
-export function getRandomMapValue( map: Map<any, any> ): any {
+export function getRandomMapValue(map: Map<any, any>): any {
     const values = Array.from(map.values())
     return values[Math.floor(Math.random() * values.length)]
 }
 
-export function getRandomArrayElement( array: any[] ): any {
+export function getRandomArrayElement(array: any[]): any {
     return array[Math.floor(Math.random() * array.length)]
 }
 
-export function getRandomNumber( min: number, max: number ): number {
+export function getRandomNumber(min: number, max: number): number {
     return Math.random() * (max - min) + min
 }
 
@@ -20,8 +20,8 @@ export function randomNegative(): number {
     return Math.random() < 0.5 ? -1 : 1
 }
 
-export function randomItemBasedOnProbability<T>( items: T[], probabilities: number[] ): T {
-    if( items.length !== probabilities.length ) {
+export function randomItemBasedOnProbability<T>(items: T[], probabilities: number[]): T {
+    if (items.length !== probabilities.length) {
         throw new Error("Items and probabilities arrays must be the same length")
     }
 
@@ -30,11 +30,18 @@ export function randomItemBasedOnProbability<T>( items: T[], probabilities: numb
 
     let index = 0
     let r = Math.random()
-    while( r > 0 ) {
+    while (r > 0) {
         r -= normalizedProbabilities[index]
         index++
     }
 
     return items[index - 1]
-    
+}
+
+export function sceneUnitsToKilometers(units: number): number {
+    return units * 1000
+}
+
+export function sceneUnitsToKilometersString(units: number): string {
+    return (units * 1000).toLocaleString()
 }
