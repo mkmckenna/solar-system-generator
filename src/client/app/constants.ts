@@ -23,8 +23,8 @@ export const MAX_PLANET_COUNT = 10
 export const MIN_DISTANCE_MULTIPLIER_FROM_STAR = 3
 export const MAX_DISTANCE_MULTIPLIER_FROM_STAR = 20
 // Orbital velocity
-export const MIN_ORBITAL_VELOCITY = 0.00025
-export const MAX_ORBITAL_VELOCITY = 0.001
+export const MIN_ORBITAL_VELOCITY = 0.00005
+export const MAX_ORBITAL_VELOCITY = 0.00025
 
 
 // ---- STAR CONSTANTS ----

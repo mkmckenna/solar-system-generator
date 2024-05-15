@@ -1,4 +1,4 @@
-import { LitElement, PropertyValueMap, css, html } from 'lit-element';
+import { CSSResult, LitElement, PropertyValueMap, css, html } from 'lit-element';
 import { UIElementDragController } from './ui_element_drag_controller';
 import { UIElementResizeController } from './ui_element_resize_controller';
 
@@ -6,7 +6,7 @@ import { UIElementResizeController } from './ui_element_resize_controller';
  * Base class for all UI elements.
  */
 export abstract class UIElement extends LitElement {
-    static styles = css`
+    static styles: CSSResult = css`
         :host {
             position: fixed;
             bottom: 50px;
@@ -25,7 +25,6 @@ export abstract class UIElement extends LitElement {
 
             color: white;
             font-size: 12px;
-            font-family: Arial, sans-serif;
 
             resize: both; /* This CSS property can allow resizing but does not work perfectly with all layouts */
             box-sizing: border-box;
