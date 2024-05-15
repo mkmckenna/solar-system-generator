@@ -24,8 +24,10 @@ export enum PlanetType {
 
 export class Planet extends Entity {
 
+    public name: string = 'Planet Name'
+
     public planetType: PlanetType = PlanetType.Rock
-    public radius = 0.0
+    public radius: number = 0.0
     public atmosphereRadius = 0.0
     public rotationSpeed = 0.0
     public orbitalVelocity = 0.0
@@ -160,6 +162,19 @@ export class Planet extends Entity {
             throw new Error("Object3D not initialized for Planet")
         }
         return this.object.position
+    }
+
+    getPlanetTypeString(): string {
+        switch (this.planetType) {
+            case PlanetType.Gas:
+                return 'Gas Giant'
+            case PlanetType.Ice:
+                return 'Ice World'
+            case PlanetType.Rock:
+                return 'Rocky World'
+            default:
+                return 'Unknown'
+        }
     }
 
 }
