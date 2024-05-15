@@ -39,7 +39,7 @@ export class PlanetBuilder {
         const planet = new Planet()
 
         planet.planetType = this.getRandomPlanetType(solarSystemProperties)
-        planet.rotationSpeed = Math.random() * 0.01
+        planet.rotationSpeed = Math.random() * 0.002
         planet.orbitalVelocity = MathUtils.randFloat(MIN_ORBITAL_VELOCITY, MAX_ORBITAL_VELOCITY)
         planet.radius = this.getRandomPlanetSize(planet.planetType)
 
