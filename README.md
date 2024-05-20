@@ -1,3 +1,6 @@
+
+![](/dist/client/img/screenshot_1.png)
+
 # Solar System Generator
 Procedurally generate different solar systems with different stars and planets.
 
