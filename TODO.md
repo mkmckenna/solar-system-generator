@@ -8,6 +8,7 @@ Context windows can be dragged off the viewport bounds
 ## Refactoring
 
 ## Features
+- First person pilot small space craft
 - Light from star
 - Planets orbit faster, closer to sun
 - Larger planets generally rotate slower
