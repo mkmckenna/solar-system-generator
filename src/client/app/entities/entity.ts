@@ -19,6 +19,10 @@ export abstract class Entity {
      */
     readonly positionDelta = new THREE.Vector3();
 
+    /**
+     * The init method is called when the entity is created. It should
+     * return a THREE.Object3D instance that represents the entity in the scene.
+     */
     abstract init(): THREE.Object3D;
 
     /**
